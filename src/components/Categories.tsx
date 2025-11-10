@@ -4,31 +4,40 @@ import { Flower2, Trees, Citrus, Sparkles } from "lucide-react";
 const categories = [
   {
     name: "Floral",
+    value: "floral",
     icon: Flower2,
     description: "Delicate & romantic",
     color: "from-pink-400 to-rose-400",
   },
   {
     name: "Woody",
+    value: "woody",
     icon: Trees,
     description: "Warm & earthy",
     color: "from-amber-600 to-orange-600",
   },
   {
     name: "Citrus",
+    value: "citrus",
     icon: Citrus,
     description: "Fresh & energizing",
     color: "from-yellow-400 to-orange-400",
   },
   {
     name: "Oriental",
+    value: "oriental",
     icon: Sparkles,
     description: "Exotic & sensual",
     color: "from-purple-500 to-pink-500",
   },
 ];
 
-const Categories = () => {
+interface CategoriesProps {
+  onCategoryClick?: (categoryName: string) => void;
+  selectedCategory?: string | null;
+}
+
+const Categories = ({ onCategoryClick, selectedCategory }: CategoriesProps) => {
   return (
     <section id="categories" className="py-20 bg-background">
       <div className="container mx-auto px-4">
@@ -42,6 +51,7 @@ const Categories = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((category, index) => {
             const Icon = category.icon;
+            const isSelected = selectedCategory === category.value;
             return (
               <motion.div
                 key={category.name}
@@ -51,11 +61,16 @@ const Categories = () => {
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -8 }}
                 className="relative group cursor-pointer"
+                onClick={() => onCategoryClick?.(category.name)}
               >
-                <div className="glass-card rounded-2xl p-8 text-center space-y-4 hover-glow transition-all duration-300 h-full">
+                <div className={`glass-card rounded-2xl p-8 text-center space-y-4 hover-glow transition-all duration-300 h-full ${
+                  isSelected ? "ring-2 ring-primary" : ""
+                }`}>
                   {/* Gradient background */}
                   <motion.div
-                    className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-300`}
+                    className={`absolute inset-0 bg-gradient-to-br ${category.color} ${
+                      isSelected ? "opacity-20" : "opacity-0 group-hover:opacity-10"
+                    } rounded-2xl transition-opacity duration-300`}
                   />
                   
                   <motion.div

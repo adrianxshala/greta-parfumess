@@ -3,6 +3,7 @@ import { ShoppingCart, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/types/product";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ProductCardProps {
   product: Product;
@@ -12,6 +13,11 @@ interface ProductCardProps {
 
 const ProductCard = ({ product, onAddToCart, onQuickView }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/product/${product.id}`);
+  };
 
   return (
     <motion.div
@@ -23,7 +29,10 @@ const ProductCard = ({ product, onAddToCart, onQuickView }: ProductCardProps) =>
       onHoverEnd={() => setIsHovered(false)}
       className="group relative"
     >
-      <div className="glass-card rounded-2xl overflow-hidden hover-glow transition-all duration-300">
+      <div 
+        className="glass-card rounded-2xl overflow-hidden hover-glow transition-all duration-300 cursor-pointer"
+        onClick={handleCardClick}
+      >
         {/* Image Container */}
         <div className="relative aspect-square overflow-hidden bg-muted">
           <motion.img
@@ -44,7 +53,10 @@ const ProductCard = ({ product, onAddToCart, onQuickView }: ProductCardProps) =>
               size="sm"
               variant="secondary"
               className="backdrop-blur-sm"
-              onClick={() => onQuickView(product)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onQuickView(product);
+              }}
             >
               <Eye className="h-4 w-4 mr-2" />
               Quick View
@@ -52,7 +64,10 @@ const ProductCard = ({ product, onAddToCart, onQuickView }: ProductCardProps) =>
             <Button
               size="sm"
               className="bg-primary hover:bg-primary/90"
-              onClick={() => onAddToCart(product)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToCart(product);
+              }}
             >
               <ShoppingCart className="h-4 w-4 mr-2" />
               Add to Cart

@@ -10,9 +10,10 @@ interface ShoppingCartProps {
   items: CartItem[];
   onUpdateQuantity: (id: string, quantity: number) => void;
   onRemove: (id: string) => void;
+  onCheckout: () => void;
 }
 
-const ShoppingCart = ({ isOpen, onClose, items, onUpdateQuantity, onRemove }: ShoppingCartProps) => {
+const ShoppingCart = ({ isOpen, onClose, items, onUpdateQuantity, onRemove, onCheckout }: ShoppingCartProps) => {
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
@@ -119,7 +120,11 @@ const ShoppingCart = ({ isOpen, onClose, items, onUpdateQuantity, onRemove }: Sh
                   <span>Total</span>
                   <span>${total.toFixed(2)}</span>
                 </div>
-                <Button className="w-full bg-primary hover:bg-primary/90 hover-glow" size="lg">
+                <Button 
+                  className="w-full bg-primary hover:bg-primary/90 hover-glow" 
+                  size="lg"
+                  onClick={onCheckout}
+                >
                   Checkout
                 </Button>
               </div>
