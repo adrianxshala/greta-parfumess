@@ -95,6 +95,9 @@ const AppLayout = () => {
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}
         items={cartItems}
+        onOrderComplete={() => {
+          setCartItems([]);
+        }}
       />
 
       <QuickViewModal

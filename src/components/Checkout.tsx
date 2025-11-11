@@ -13,12 +13,18 @@ interface CheckoutProps {
   isOpen: boolean;
   onClose: () => void;
   items: CartItem[];
+  onOrderComplete?: () => void;
 }
 
-const Checkout = ({ isOpen, onClose, items }: CheckoutProps) => {
+const Checkout = ({
+  isOpen,
+  onClose,
+  items,
+  onOrderComplete,
+}: CheckoutProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
@@ -27,11 +33,44 @@ const Checkout = ({ isOpen, onClose, items }: CheckoutProps) => {
     notes: "",
   });
 
-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleWhatsAppOrder = () => {
+    const phoneNumber = "38349153002"; // +383 49 153 002 without + and spaces
+
+    // Build order details message in Albanian
+    let orderMessage = `Përshëndetje! Dua të bëj një porosi:\n\n`;
+    orderMessage += `*Informacioni i Klientit:*\n`;
+    orderMessage += `Emri: ${formData.fullName}\n`;
+    orderMessage += `Telefoni: ${formData.phone}\n`;
+    orderMessage += `Adresa: ${formData.address}\n`;
+    orderMessage += `Qyteti: ${formData.city}\n`;
+    if (formData.notes) {
+      orderMessage += `Shënime: ${formData.notes}\n`;
+    }
+    orderMessage += `\n*Artikujt e Porosisë:*\n`;
+    items.forEach((item) => {
+      orderMessage += `- ${item.name} (Sasia: ${item.quantity} × $${
+        item.price
+      }) = $${(item.price * item.quantity).toFixed(2)}\n`;
+    });
+    orderMessage += `\n*Totali: $${total.toFixed(2)}*\n`;
+    orderMessage += `Metoda e Pagesës: Pagesë në Dorëzim\n\n`;
+    orderMessage += `Ju lutem konfirmoni këtë porosi. Faleminderit!`;
+
+    const message = encodeURIComponent(orderMessage);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+    window.open(whatsappUrl, "_blank");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,6 +83,14 @@ const Checkout = ({ isOpen, onClose, items }: CheckoutProps) => {
     setIsSubmitting(false);
     setIsSuccess(true);
     toast.success("Order placed successfully!");
+
+    // Open WhatsApp with order details
+    handleWhatsAppOrder();
+
+    // Clear cart after order is placed
+    if (onOrderComplete) {
+      onOrderComplete();
+    }
 
     // Reset form after 3 seconds
     setTimeout(() => {
@@ -78,12 +125,19 @@ const Checkout = ({ isOpen, onClose, items }: CheckoutProps) => {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed right-0 top-0 h-full w-full max-w-2xl bg-background shadow-2xl z-50 flex flex-col"
+            className="fixed right-0 top-0 h-full w-full sm:max-w-2xl bg-background shadow-2xl z-50 flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b">
-              <h2 className="text-2xl font-serif font-semibold">Checkout</h2>
-              <Button variant="ghost" size="icon" onClick={onClose}>
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b">
+              <h2 className="text-xl sm:text-2xl font-serif font-semibold">
+                Checkout
+              </h2>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onClose}
+                className="h-10 w-10 sm:h-11 sm:w-11"
+              >
                 <X className="h-5 w-5" />
               </Button>
             </div>
@@ -103,36 +157,51 @@ const Checkout = ({ isOpen, onClose, items }: CheckoutProps) => {
                 >
                   <CheckCircle2 className="h-12 w-12 text-primary" />
                 </motion.div>
-                <h3 className="text-2xl font-serif font-semibold">Order Placed!</h3>
+                <h3 className="text-2xl font-serif font-semibold">
+                  Order Placed!
+                </h3>
                 <p className="text-muted-foreground">
-                  Your order will be delivered soon. Please have cash ready for payment.
+                  Your order will be delivered soon. Please have cash ready for
+                  payment.
                 </p>
               </motion.div>
             ) : (
               <ScrollArea className="flex-1">
-                <form onSubmit={handleSubmit} className="p-6 space-y-8">
+                <form
+                  onSubmit={handleSubmit}
+                  className="p-4 sm:p-6 space-y-6 sm:space-y-8"
+                >
                   {/* Customer Information */}
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2 mb-4">
-                      <User className="h-5 w-5 text-primary" />
-                      <h3 className="text-lg font-serif font-semibold">Customer Information</h3>
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                      <User className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                      <h3 className="text-base sm:text-lg font-serif font-semibold">
+                        Customer Information
+                      </h3>
                     </div>
-                    
+
                     <div className="space-y-2">
-                      <Label htmlFor="fullName">Full Name *</Label>
+                      <Label
+                        htmlFor="fullName"
+                        className="text-sm sm:text-base"
+                      >
+                        Full Name *
+                      </Label>
                       <Input
                         id="fullName"
                         name="fullName"
                         value={formData.fullName}
                         onChange={handleInputChange}
                         required
-                        placeholder="John Doe"
-                        className="glass-card"
+                        placeholder="Greta Parfume "
+                        className="glass-card h-11 sm:h-12 text-sm sm:text-base"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number *</Label>
+                      <Label htmlFor="phone" className="text-sm sm:text-base">
+                        Phone Number *
+                      </Label>
                       <Input
                         id="phone"
                         name="phone"
@@ -140,100 +209,112 @@ const Checkout = ({ isOpen, onClose, items }: CheckoutProps) => {
                         value={formData.phone}
                         onChange={handleInputChange}
                         required
-                        placeholder="+355 69 123 4567"
-                        className="glass-card"
+                        placeholder="+383 49 123 123"
+                        className="glass-card h-11 sm:h-12 text-sm sm:text-base"
                       />
                     </div>
                   </div>
 
                   {/* Delivery Address */}
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2 mb-4">
-                      <MapPin className="h-5 w-5 text-primary" />
-                      <h3 className="text-lg font-serif font-semibold">Delivery Address</h3>
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                      <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                      <h3 className="text-base sm:text-lg font-serif font-semibold">
+                        Delivery Address
+                      </h3>
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="address">Street Address *</Label>
+                      <Label htmlFor="address" className="text-sm sm:text-base">
+                        Address *
+                      </Label>
                       <Input
                         id="address"
                         name="address"
                         value={formData.address}
                         onChange={handleInputChange}
                         required
-                        placeholder="Street name and number"
-                        className="glass-card"
+                        placeholder="Emri i rrugës"
+                        className="glass-card h-11 sm:h-12 text-sm sm:text-base"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="city">City *</Label>
+                      <Label htmlFor="city" className="text-sm sm:text-base">
+                        City *
+                      </Label>
                       <Input
                         id="city"
                         name="city"
                         value={formData.city}
                         onChange={handleInputChange}
                         required
-                        placeholder="Tirana"
-                        className="glass-card"
+                        placeholder="Kosovë-Prishtinë"
+                        className="glass-card h-11 sm:h-12 text-sm sm:text-base"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="notes">Delivery Notes (Optional)</Label>
+                      <Label htmlFor="notes" className="text-sm sm:text-base">
+                        Delivery Notes (Optional)
+                      </Label>
                       <Textarea
                         id="notes"
                         name="notes"
                         value={formData.notes}
                         onChange={handleInputChange}
-                        placeholder="Any special instructions for delivery..."
-                        className="glass-card min-h-[80px]"
+                        placeholder="Udhëzime të veçanta për dorëzimin..."
+                        className="glass-card min-h-[80px] text-sm sm:text-base"
                       />
                     </div>
                   </div>
 
                   {/* Payment Method */}
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Wallet className="h-5 w-5 text-primary" />
-                      <h3 className="text-lg font-serif font-semibold">Payment Method</h3>
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                      <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                      <h3 className="text-base sm:text-lg font-serif font-semibold">
+                        Payment Method
+                      </h3>
                     </div>
 
                     <motion.div
                       whileHover={{ scale: 1.02 }}
-                      className="p-4 rounded-xl glass-card border-2 border-primary/20"
+                      className="p-3 sm:p-4 rounded-xl glass-card border-2 border-primary/20"
                     >
                       <div className="flex items-center gap-2">
-                        <Wallet className="h-5 w-5 text-primary" />
-                        <span className="font-semibold">Cash on Delivery</span>
+                        <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                        <span className="font-semibold text-sm sm:text-base">
+                          Cash on Delivery
+                        </span>
                       </div>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        Pagesë në dorëzim – Perfect for vendor or regional stores
+                      <p className="text-xs sm:text-sm text-muted-foreground mt-2">
+                        Pagesë në dorëzim
                       </p>
                     </motion.div>
                   </div>
 
                   {/* Order Summary */}
-                  <div className="space-y-4 p-6 rounded-xl glass-card">
-                    <h3 className="text-lg font-serif font-semibold mb-4">Order Summary</h3>
-                    
+                  <div className="space-y-4 p-4 sm:p-6 rounded-xl glass-card">
+                    <h3 className="text-base sm:text-lg font-serif font-semibold mb-3 sm:mb-4">
+                      Order Summary
+                    </h3>
+
                     <div className="space-y-3">
                       {items.map((item) => (
-                        <div key={item.id} className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <img
-                              src={item.image}
-                              alt={item.name}
-                              className="w-12 h-12 object-cover rounded-lg"
-                            />
-                            <div>
-                              <p className="font-medium text-sm">{item.name}</p>
-                              <p className="text-xs text-muted-foreground">
-                                Qty: {item.quantity} × ${item.price}
-                              </p>
-                            </div>
+                        <div
+                          key={item.id}
+                          className="flex items-center justify-between"
+                        >
+                          <div>
+                            <p className="font-medium text-sm">{item.name}</p>
+                            <p className="text-xs text-muted-foreground">
+                              Qty: {item.quantity} × ${item.price}
+                            </p>
                           </div>
-                          <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
+                          <p className="font-semibold">
+                            ${(item.price * item.quantity).toFixed(2)}
+                          </p>
                         </div>
                       ))}
                     </div>
@@ -258,14 +339,17 @@ const Checkout = ({ isOpen, onClose, items }: CheckoutProps) => {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-primary hover:bg-primary/90 hover-glow"
-                    size="lg"
+                    className="w-full bg-primary hover:bg-primary/90 hover-glow h-12 sm:h-14 text-base sm:text-lg font-semibold"
                   >
                     {isSubmitting ? (
                       <>
                         <motion.div
                           animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                          transition={{
+                            duration: 1,
+                            repeat: Infinity,
+                            ease: "linear",
+                          }}
                           className="h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2"
                         />
                         Processing...
@@ -288,4 +372,3 @@ const Checkout = ({ isOpen, onClose, items }: CheckoutProps) => {
 };
 
 export default Checkout;
-

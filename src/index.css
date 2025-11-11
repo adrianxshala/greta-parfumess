@@ -139,4 +139,24 @@ All colors MUST be HSL.
   .hover-glow:hover {
     box-shadow: var(--shadow-glow);
   }
+
+  /* Mobile app-like improvements */
+  @media (max-width: 640px) {
+    /* Better touch targets */
+    button, a {
+      min-height: 44px;
+      min-width: 44px;
+    }
+
+    /* Smooth scrolling */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Better text rendering on mobile */
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  }
 }

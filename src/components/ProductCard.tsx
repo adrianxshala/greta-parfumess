@@ -30,70 +30,62 @@ const ProductCard = ({ product, onAddToCart, onQuickView }: ProductCardProps) =>
       className="group relative"
     >
       <div 
-        className="glass-card rounded-2xl overflow-hidden hover-glow transition-all duration-300 cursor-pointer"
+        className="glass-card rounded-2xl sm:rounded-3xl overflow-hidden hover-glow transition-all duration-300 cursor-pointer active:scale-[0.98]"
         onClick={handleCardClick}
       >
-        {/* Image Container */}
-        <div className="relative aspect-square overflow-hidden bg-muted">
-          <motion.img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover"
-            animate={{ scale: isHovered ? 1.1 : 1 }}
-            transition={{ duration: 0.4 }}
-          />
+        {/* Product Image */}
+        {product.image && (
+          <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-muted">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+            />
+          </div>
+        )}
+        
+        {/* Product Info */}
+        <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1 min-w-0">
+              <h3 className="font-serif text-lg sm:text-xl font-semibold truncate">{product.name}</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground capitalize mt-0.5">{product.category}</p>
+            </div>
+            <p className="font-semibold text-base sm:text-lg whitespace-nowrap ml-2">${product.price}</p>
+          </div>
           
-          {/* Overlay with buttons */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isHovered ? 1 : 0 }}
-            className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end justify-center p-4 gap-2"
-          >
+          {product.description && (
+            <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
+              {product.description}
+            </p>
+          )}
+
+          {/* Action Buttons */}
+          <div className="flex gap-2 sm:gap-3 pt-2">
             <Button
               size="sm"
-              variant="secondary"
-              className="backdrop-blur-sm"
+              variant="outline"
+              className="flex-1 h-10 sm:h-11 text-sm sm:text-base"
               onClick={(e) => {
                 e.stopPropagation();
                 onQuickView(product);
               }}
             >
-              <Eye className="h-4 w-4 mr-2" />
-              Quick View
+              <Eye className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Quick View</span>
             </Button>
             <Button
               size="sm"
-              className="bg-primary hover:bg-primary/90"
+              className="flex-1 h-10 sm:h-11 bg-primary hover:bg-primary/90 text-sm sm:text-base"
               onClick={(e) => {
                 e.stopPropagation();
                 onAddToCart(product);
               }}
             >
-              <ShoppingCart className="h-4 w-4 mr-2" />
-              Add to Cart
+              <ShoppingCart className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Add to Cart</span>
+              <span className="sm:hidden">Add</span>
             </Button>
-          </motion.div>
-        </div>
-
-        {/* Product Info */}
-        <div className="p-6 space-y-3">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex-1">
-              <h3 className="font-serif text-xl font-semibold">{product.name}</h3>
-              <p className="text-sm text-muted-foreground capitalize mt-1">{product.category}</p>
-            </div>
-            <p className="font-semibold text-lg">${product.price}</p>
-          </div>
-          
-          <div className="flex flex-wrap gap-1">
-            {product.notes.map((note) => (
-              <span
-                key={note}
-                className="text-xs px-2 py-1 bg-muted rounded-full text-muted-foreground"
-              >
-                {note}
-              </span>
-            ))}
           </div>
         </div>
       </div>
