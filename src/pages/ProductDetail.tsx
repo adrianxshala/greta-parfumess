@@ -44,7 +44,9 @@ const ProductDetail = () => {
       try {
         setLoading(true);
         setError(null);
-        const data = await fetchProductById(id);
+        // Decode the ID in case it was encoded
+        const decodedId = decodeURIComponent(id);
+        const data = await fetchProductById(decodedId);
         if (data) {
           setProduct(data);
           // Set default size and price
@@ -136,14 +138,30 @@ const ProductDetail = () => {
     if (!product) return;
 
     const phoneNumber = "38349153002"; // +383 49 153 002 without + and spaces
+
+    // Make the message more cute and friendly with emojis and better formatting
+    const categoryEmoji: Record<string, string> = {
+      men: "👔",
+      woman: "💄",
+      "luxury-line": "✨",
+      unisex: "🌟",
+      kids: "🎈",
+    };
+
+    const emoji = categoryEmoji[product.category] || "🌸";
+
     const message = encodeURIComponent(
-      `Përshëndetje! Jam i interesuar për këtë produkt:\n\n` +
-        `*${product.name}*\n` +
-        `Madhësia: ${selectedSize}\n` +
-        `Çmimi: €${currentPrice.toFixed(2)}\n` +
-        `Kategoria: ${product.category}\n` +
-        `Sasia: ${quantity}\n\n` +
-        `A mund të më jepni më shumë informacion?`
+      `👋 Përshëndetje! ✨\n\n` +
+        `Jam shumë i interesuar për këtë produkt të bukur:\n\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `${emoji} *${product.name}*\n` +
+        `━━━━━━━━━━━━━━━━━━\n\n` +
+        `📏 *Madhësia:* ${selectedSize}\n` +
+        `💰 *Çmimi:* €${currentPrice.toFixed(2)}\n` +
+        `🏷️ *Kategoria:* ${product.category}\n` +
+        `📦 *Sasia:* ${quantity}\n\n` +
+        `💭 A mund të më jepni më shumë informacion për këtë produkt?\n` +
+        `Faleminderit! 🙏✨`
     );
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, "_blank");

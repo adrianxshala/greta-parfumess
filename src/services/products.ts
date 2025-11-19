@@ -34,10 +34,15 @@ export const fetchProducts = async (): Promise<Product[]> => {
 
 export const fetchProductById = async (id: string): Promise<Product | null> => {
   try {
+    // Try to parse as number first (in case ID is numeric in database)
+    // Otherwise use as string
+    const numericId = Number(id);
+    const queryId = !isNaN(numericId) && numericId > 0 ? numericId : id;
+    
     const { data, error } = await supabase
       .from('products')
       .select('id, name, description, price, category, image_url, price_15ml, price_35ml, price_100ml')
-      .eq('id', id)
+      .eq('id', queryId)
       .single();
 
     if (error) {

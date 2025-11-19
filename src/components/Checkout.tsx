@@ -48,34 +48,31 @@ const Checkout = ({
   const handleWhatsAppOrder = () => {
     const phoneNumber = "38349153002"; // +383 49 153 002 without + and spaces
 
-    // Build compact order message optimized for mobile WhatsApp
-    let orderMessage = `🛍️ *POROSI E RE*\n`;
-    orderMessage += `━━━━━━━━━━━━\n\n`;
+    // Build super compact, mobile-optimized order message
+    let orderMessage = `🛍️ *POROSI E RE*\n\n`;
 
-    // Customer Information - compact format
-    orderMessage += `👤 *Klienti:*\n`;
-    orderMessage += `📝 ${formData.fullName}\n`;
+    // Customer Information - minimal format
+    orderMessage += `👤 *${formData.fullName}*\n`;
     orderMessage += `📱 ${formData.phone}\n`;
     orderMessage += `📍 ${formData.address}, ${formData.city}\n`;
-    if (formData.notes) {
+    if (formData.notes && formData.notes.trim()) {
       orderMessage += `💬 ${formData.notes}\n`;
     }
 
-    orderMessage += `\n🛒 *Porosia:*\n`;
-    items.forEach((item) => {
-      const sizeText = item.selectedSize ? ` ${item.selectedSize}` : "";
-      orderMessage += `• ${item.name}${sizeText} (${
-        item.quantity
-      }×€${item.price.toFixed(2)}) = *€${(item.price * item.quantity).toFixed(
-        2
-      )}*\n`;
+    // Products - numbered list format
+    orderMessage += `\n🛒 *ARTIKUJT:*\n`;
+    items.forEach((item, index) => {
+      const sizeText = item.selectedSize ? ` (${item.selectedSize})` : "";
+      const itemTotal = (item.price * item.quantity).toFixed(2);
+      orderMessage += `${index + 1}. ${item.name}${sizeText}\n`;
+      orderMessage += `   └─ ${item.quantity}×€${item.price.toFixed(2)} = *€${itemTotal}*\n`;
     });
 
-    orderMessage += `\n━━━━━━━━━━━━\n`;
-    orderMessage += `💵 *Totali: €${total.toFixed(2)}*\n`;
-    orderMessage += `📦 Pagesë në Dorëzim\n`;
-    orderMessage += `━━━━━━━━━━━━\n\n`;
-    orderMessage += `✅ Ju lutem konfirmoni. Faleminderit! 🙏`;
+    // Payment & Total
+    orderMessage += `\n💰 *TOTALI: €${total.toFixed(2)}*\n`;
+    orderMessage += `📦 Pagesë në Dorëzim\n\n`;
+    orderMessage += `✅ Ju lutem konfirmoni porosinë.\n`;
+    orderMessage += `Faleminderit! 🙏✨`;
 
     const message = encodeURIComponent(orderMessage);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;

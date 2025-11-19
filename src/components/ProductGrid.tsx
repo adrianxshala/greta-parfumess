@@ -3,7 +3,7 @@ import { Product } from "@/types/product";
 import ProductCard from "./ProductCard";
 import { Button } from "@/components/ui/button";
 import { fetchProducts } from "@/services/products";
-import { Loader2, ArrowRight } from "lucide-react";
+import { Loader2, ArrowRight, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -71,21 +71,60 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
   };
 
   return (
-    <section id="products" className="py-8 sm:py-12 md:py-16 bg-gradient-to-b from-background to-muted/20">
-      <div className="container mx-auto px-4 sm:px-6">
+    <section id="products" className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-background via-primary/5 to-muted/30 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-32 h-32 rounded-full bg-primary/5 blur-3xl"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 4 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 30, filter: "blur(20px)" }}
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="text-center mb-6 sm:mb-8 space-y-2 sm:space-y-3"
+          className="text-center mb-8 sm:mb-12 space-y-4 sm:space-y-5"
         >
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, type: "spring", stiffness: 200, damping: 15 }}
+            className="inline-block mb-2"
+          >
+            <motion.div
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
+              className="inline-block"
+            >
+              <Sparkles className="h-6 w-6 sm:h-8 sm:w-8 text-primary/60" />
+            </motion.div>
+          </motion.div>
+          
           <motion.h2 
             initial={{ opacity: 0, y: 20, filter: "blur(15px)" }}
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 1, ease: "easeOut" }}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent"
           >
             Koleksioni Ynë
           </motion.h2>
@@ -94,9 +133,9 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             viewport={{ once: true }}
             transition={{ delay: 0.4, duration: 1, ease: "easeOut" }}
-            className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-2"
+            className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-2 leading-relaxed"
           >
-            Zbuloni parfumet tona të punuara me dorë, secili një udhëtim unik olfaktor
+            Zbuloni parfumet tona të punuara me dorë, secili një udhëtim unik olfaktor ✨
           </motion.p>
         </motion.div>
 
@@ -106,7 +145,7 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ delay: 0.6, duration: 1, ease: "easeOut" }}
-          className="flex flex-wrap items-center justify-center gap-2 mb-4 sm:mb-6 md:mb-8 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0"
+          className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 md:mb-12 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0"
         >
           {categories.map((category, index) => (
             <motion.div
@@ -122,7 +161,7 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
                 stiffness: 200,
                 damping: 20
               }}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.08, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
               <Button
@@ -131,8 +170,8 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
                 size="sm"
                 className={
                   selectedCategory === category.value
-                    ? "bg-primary hover:bg-primary/90 text-xs sm:text-sm h-9 sm:h-10 px-4 sm:px-6 whitespace-nowrap transition-all"
-                    : "hover:bg-primary/10 text-xs sm:text-sm h-9 sm:h-10 px-4 sm:px-6 whitespace-nowrap transition-all"
+                    ? "bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white text-xs sm:text-sm h-10 sm:h-11 px-5 sm:px-7 whitespace-nowrap transition-all rounded-full shadow-lg shadow-primary/30 font-medium"
+                    : "hover:bg-primary/10 hover:border-primary/30 text-xs sm:text-sm h-10 sm:h-11 px-5 sm:px-7 whitespace-nowrap transition-all rounded-full border-2 backdrop-blur-sm"
                 }
               >
                 {category.name}
@@ -163,7 +202,7 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10"
             >
               {displayedProducts.map((product, index) => (
                 <motion.div
@@ -196,20 +235,20 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
                 whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
-                className="flex justify-center mt-8 sm:mt-12"
+                className="flex justify-center mt-10 sm:mt-14"
               >
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
                   <Button
                     onClick={handleViewAll}
                     size="lg"
-                    className="bg-primary hover:bg-primary/90 hover-glow h-12 sm:h-14 px-8 sm:px-10 text-base sm:text-lg font-semibold transition-all"
+                    className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white hover-glow h-14 sm:h-16 px-10 sm:px-12 text-base sm:text-lg font-semibold transition-all rounded-full shadow-xl shadow-primary/30 group"
                   >
                     Shiko Të Gjitha Produktet
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </motion.div>
               </motion.div>

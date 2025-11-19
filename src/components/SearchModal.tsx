@@ -46,7 +46,17 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
   }, [query, products]);
 
   const handleProductClick = (productId: string) => {
-    navigate(`/product/${productId}`);
+    if (!productId) {
+      console.error('Product ID is missing');
+      return;
+    }
+    
+    try {
+      const encodedId = encodeURIComponent(String(productId).trim());
+      navigate(`/product/${encodedId}`);
+    } catch (error) {
+      console.error('Error navigating to product:', error);
+    }
     onClose();
     setQuery("");
   };
