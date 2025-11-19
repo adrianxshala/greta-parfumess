@@ -19,37 +19,43 @@ const AppLayout = () => {
   const handleAddToCart = (product: Product | undefined, quantity: number = 1) => {
     if (!product) return;
     
-    const existingItem = cartItems.find((item) => item.id === product.id);
+    // Convert to CartItem and check if same product with same size exists
+    const cartItem: CartItem = { ...product, quantity, selectedSize: (product as any).selectedSize };
+    
+    // Find existing item with same ID and size
+    const existingItem = cartItems.find(
+      (item) => item.id === product.id && item.selectedSize === cartItem.selectedSize
+    );
     
     if (existingItem) {
       setCartItems(
         cartItems.map((item) =>
-          item.id === product.id
+          item.id === product.id && item.selectedSize === cartItem.selectedSize
             ? { ...item, quantity: item.quantity + quantity }
             : item
         )
       );
       toast.success(`Added ${quantity} item(s) to cart`);
     } else {
-      setCartItems([...cartItems, { ...product, quantity }]);
+      setCartItems([...cartItems, cartItem]);
       toast.success(`Added ${quantity} item(s) to cart`);
     }
   };
 
-  const handleUpdateQuantity = (id: string, quantity: number) => {
+  const handleUpdateQuantity = (id: string, quantity: number, selectedSize?: string) => {
     if (quantity === 0) {
-      handleRemoveFromCart(id);
+      handleRemoveFromCart(id, selectedSize);
       return;
     }
     setCartItems(
       cartItems.map((item) =>
-        item.id === id ? { ...item, quantity } : item
+        item.id === id && item.selectedSize === selectedSize ? { ...item, quantity } : item
       )
     );
   };
 
-  const handleRemoveFromCart = (id: string) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+  const handleRemoveFromCart = (id: string, selectedSize?: string) => {
+    setCartItems(cartItems.filter((item) => !(item.id === id && item.selectedSize === selectedSize)));
     toast.success("Removed from cart");
   };
 

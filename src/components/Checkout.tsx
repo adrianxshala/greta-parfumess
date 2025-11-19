@@ -48,25 +48,34 @@ const Checkout = ({
   const handleWhatsAppOrder = () => {
     const phoneNumber = "38349153002"; // +383 49 153 002 without + and spaces
 
-    // Build order details message in Albanian
-    let orderMessage = `Përshëndetje! Dua të bëj një porosi:\n\n`;
-    orderMessage += `*Informacioni i Klientit:*\n`;
-    orderMessage += `Emri: ${formData.fullName}\n`;
-    orderMessage += `Telefoni: ${formData.phone}\n`;
-    orderMessage += `Adresa: ${formData.address}\n`;
-    orderMessage += `Qyteti: ${formData.city}\n`;
+    // Build compact order message optimized for mobile WhatsApp
+    let orderMessage = `🛍️ *POROSI E RE*\n`;
+    orderMessage += `━━━━━━━━━━━━\n\n`;
+
+    // Customer Information - compact format
+    orderMessage += `👤 *Klienti:*\n`;
+    orderMessage += `📝 ${formData.fullName}\n`;
+    orderMessage += `📱 ${formData.phone}\n`;
+    orderMessage += `📍 ${formData.address}, ${formData.city}\n`;
     if (formData.notes) {
-      orderMessage += `Shënime: ${formData.notes}\n`;
+      orderMessage += `💬 ${formData.notes}\n`;
     }
-    orderMessage += `\n*Artikujt e Porosisë:*\n`;
+
+    orderMessage += `\n🛒 *Porosia:*\n`;
     items.forEach((item) => {
-      orderMessage += `- ${item.name} (Sasia: ${item.quantity} × $${
-        item.price
-      }) = $${(item.price * item.quantity).toFixed(2)}\n`;
+      const sizeText = item.selectedSize ? ` ${item.selectedSize}` : "";
+      orderMessage += `• ${item.name}${sizeText} (${
+        item.quantity
+      }×€${item.price.toFixed(2)}) = *€${(item.price * item.quantity).toFixed(
+        2
+      )}*\n`;
     });
-    orderMessage += `\n*Totali: $${total.toFixed(2)}*\n`;
-    orderMessage += `Metoda e Pagesës: Pagesë në Dorëzim\n\n`;
-    orderMessage += `Ju lutem konfirmoni këtë porosi. Faleminderit!`;
+
+    orderMessage += `\n━━━━━━━━━━━━\n`;
+    orderMessage += `💵 *Totali: €${total.toFixed(2)}*\n`;
+    orderMessage += `📦 Pagesë në Dorëzim\n`;
+    orderMessage += `━━━━━━━━━━━━\n\n`;
+    orderMessage += `✅ Ju lutem konfirmoni. Faleminderit! 🙏`;
 
     const message = encodeURIComponent(orderMessage);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
@@ -309,11 +318,11 @@ const Checkout = ({
                           <div>
                             <p className="font-medium text-sm">{item.name}</p>
                             <p className="text-xs text-muted-foreground">
-                              Qty: {item.quantity} × ${item.price}
+                              Qty: {item.quantity} × €{item.price}
                             </p>
                           </div>
                           <p className="font-semibold">
-                            ${(item.price * item.quantity).toFixed(2)}
+                            €{(item.price * item.quantity).toFixed(2)}
                           </p>
                         </div>
                       ))}
@@ -322,7 +331,7 @@ const Checkout = ({
                     <div className="border-t pt-4 space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">Subtotal</span>
-                        <span>${total.toFixed(2)}</span>
+                        <span>€{total.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">Delivery</span>
@@ -330,7 +339,7 @@ const Checkout = ({
                       </div>
                       <div className="flex justify-between text-lg font-semibold pt-2 border-t">
                         <span>Total</span>
-                        <span>${total.toFixed(2)}</span>
+                        <span>€{total.toFixed(2)}</span>
                       </div>
                     </div>
                   </div>

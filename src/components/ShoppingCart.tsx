@@ -8,13 +8,27 @@ interface ShoppingCartProps {
   isOpen: boolean;
   onClose: () => void;
   items: CartItem[];
-  onUpdateQuantity: (id: string, quantity: number) => void;
-  onRemove: (id: string) => void;
+  onUpdateQuantity: (
+    id: string,
+    quantity: number,
+    selectedSize?: string
+  ) => void;
+  onRemove: (id: string, selectedSize?: string) => void;
   onCheckout: () => void;
 }
 
-const ShoppingCart = ({ isOpen, onClose, items, onUpdateQuantity, onRemove, onCheckout }: ShoppingCartProps) => {
-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+const ShoppingCart = ({
+  isOpen,
+  onClose,
+  items,
+  onUpdateQuantity,
+  onRemove,
+  onCheckout,
+}: ShoppingCartProps) => {
+  const total = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   return (
     <AnimatePresence>
@@ -41,9 +55,16 @@ const ShoppingCart = ({ isOpen, onClose, items, onUpdateQuantity, onRemove, onCh
             <div className="flex items-center justify-between p-4 sm:p-6 border-b">
               <div className="flex items-center gap-2 sm:gap-3">
                 <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6" />
-                <h2 className="text-lg sm:text-xl font-serif font-semibold">Shopping Cart</h2>
+                <h2 className="text-lg sm:text-xl font-serif font-semibold">
+                  Shopping Cart
+                </h2>
               </div>
-              <Button variant="ghost" size="icon" onClick={onClose} className="h-10 w-10 sm:h-11 sm:w-11">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onClose}
+                className="h-10 w-10 sm:h-11 sm:w-11"
+              >
                 <X className="h-5 w-5" />
               </Button>
             </div>
@@ -53,57 +74,96 @@ const ShoppingCart = ({ isOpen, onClose, items, onUpdateQuantity, onRemove, onCh
               {items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center py-12 px-4">
                   <ShoppingBag className="h-12 w-12 sm:h-16 sm:w-16 text-muted-foreground/50 mb-4" />
-                  <p className="text-base sm:text-lg font-medium mb-2">Your cart is empty</p>
-                  <p className="text-xs sm:text-sm text-muted-foreground">Add some fragrances to get started</p>
+                  <p className="text-base sm:text-lg font-medium mb-2">
+                    Your cart is empty
+                  </p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    Add some fragrances to get started
+                  </p>
                 </div>
               ) : (
                 <div className="space-y-3 sm:space-y-4">
-                  {items.map((item) => (
-                    <motion.div
-                      key={item.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      className="flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl glass-card"
-                    >
-                      <div className="flex-1 space-y-2 min-w-0">
-                        <div className="flex justify-between items-start gap-2">
-                          <h3 className="font-medium text-sm sm:text-base truncate">{item.name}</h3>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 sm:h-9 sm:w-9 flex-shrink-0"
-                            onClick={() => onRemove(item.id)}
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        </div>
-                        <p className="text-xs sm:text-sm text-muted-foreground capitalize">{item.category}</p>
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-2">
+                  {items.map((item, index) => {
+                    // Create unique key for items with same id but different sizes
+                    const uniqueKey = item.selectedSize
+                      ? `${item.id}-${item.selectedSize}-${index}`
+                      : `${item.id}-${index}`;
+                    return (
+                      <motion.div
+                        key={uniqueKey}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, x: 100 }}
+                        className="flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl glass-card"
+                      >
+                        <div className="flex-1 space-y-2 min-w-0">
+                          <div className="flex justify-between items-start gap-2">
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-medium text-sm sm:text-base truncate">
+                                {item.name}
+                              </h3>
+                              {item.selectedSize && (
+                                <p className="text-xs text-primary font-medium mt-0.5">
+                                  {item.selectedSize}
+                                </p>
+                              )}
+                            </div>
                             <Button
-                              variant="outline"
+                              variant="ghost"
                               size="icon"
-                              className="h-8 w-8 sm:h-9 sm:w-9"
-                              onClick={() => onUpdateQuantity(item.id, Math.max(0, item.quantity - 1))}
+                              className="h-8 w-8 sm:h-9 sm:w-9 flex-shrink-0"
+                              onClick={() =>
+                                onRemove(item.id, item.selectedSize)
+                              }
                             >
-                              <Minus className="h-3.5 w-3.5" />
-                            </Button>
-                            <span className="w-8 sm:w-10 text-center font-medium text-sm sm:text-base">{item.quantity}</span>
-                            <Button
-                              variant="outline"
-                              size="icon"
-                              className="h-8 w-8 sm:h-9 sm:w-9"
-                              onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-                            >
-                              <Plus className="h-3.5 w-3.5" />
+                              <X className="h-4 w-4" />
                             </Button>
                           </div>
-                          <p className="font-semibold text-sm sm:text-base whitespace-nowrap">${(item.price * item.quantity).toFixed(2)}</p>
+                          <p className="text-xs sm:text-sm text-muted-foreground capitalize">
+                            {item.category}
+                          </p>
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                className="h-8 w-8 sm:h-9 sm:w-9"
+                                onClick={() =>
+                                  onUpdateQuantity(
+                                    item.id,
+                                    Math.max(0, item.quantity - 1),
+                                    item.selectedSize
+                                  )
+                                }
+                              >
+                                <Minus className="h-3.5 w-3.5" />
+                              </Button>
+                              <span className="w-8 sm:w-10 text-center font-medium text-sm sm:text-base">
+                                {item.quantity}
+                              </span>
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                className="h-8 w-8 sm:h-9 sm:w-9"
+                                onClick={() =>
+                                  onUpdateQuantity(
+                                    item.id,
+                                    item.quantity + 1,
+                                    item.selectedSize
+                                  )
+                                }
+                              >
+                                <Plus className="h-3.5 w-3.5" />
+                              </Button>
+                            </div>
+                            <p className="font-semibold text-sm sm:text-base whitespace-nowrap">
+                              €{(item.price * item.quantity).toFixed(2)}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    </motion.div>
-                  ))}
+                      </motion.div>
+                    );
+                  })}
                 </div>
               )}
             </ScrollArea>
@@ -113,10 +173,10 @@ const ShoppingCart = ({ isOpen, onClose, items, onUpdateQuantity, onRemove, onCh
               <div className="border-t p-4 sm:p-6 space-y-3 sm:space-y-4 bg-background">
                 <div className="flex justify-between text-base sm:text-lg font-semibold">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>€{total.toFixed(2)}</span>
                 </div>
-                <Button 
-                  className="w-full bg-primary hover:bg-primary/90 hover-glow h-12 sm:h-14 text-base sm:text-lg font-semibold" 
+                <Button
+                  className="w-full bg-primary hover:bg-primary/90 hover-glow h-12 sm:h-14 text-base sm:text-lg font-semibold"
                   onClick={onCheckout}
                 >
                   Checkout

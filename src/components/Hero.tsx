@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import heroPerfume from "@/assets/hero-perfume.jpg";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 sm:pt-20 lg:pt-20">
       {/* Mobile App-like Background with Gradient */}
@@ -107,7 +110,7 @@ const Hero = () => {
                 className="inline-block mb-3 sm:mb-4"
               >
                 <span className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/10 border border-primary/20 text-primary font-semibold text-xs sm:text-sm">
-                  KOLEKSION I RI 2024
+                  KOLEKSION I RI 2025
                 </span>
               </motion.div>
 
@@ -139,11 +142,7 @@ const Hero = () => {
               <Button
                 size="lg"
                 className="bg-primary text-primary-foreground hover:bg-primary/90 hover-glow group h-14 sm:h-16 text-base sm:text-lg font-semibold w-full sm:w-auto rounded-2xl sm:rounded-2xl shadow-lg active:scale-95 transition-all"
-                onClick={() =>
-                  document
-                    .getElementById("products")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
+                onClick={() => navigate("/products")}
               >
                 Eksploroni Koleksionin
                 <ArrowRight className="ml-2 h-5 w-5 sm:h-6 sm:w-6 group-hover:translate-x-1 transition-transform" />

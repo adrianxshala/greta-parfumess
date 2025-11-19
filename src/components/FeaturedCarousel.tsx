@@ -70,11 +70,11 @@ const FeaturedCarousel = () => {
                 transition={{ delay: 0.2 }}
                 className="relative"
               >
-                <div className="aspect-square rounded-2xl overflow-hidden bg-muted">
+                <div className="aspect-square rounded-2xl overflow-hidden bg-transparent flex items-center justify-center">
                   <img
                     src={current.image}
                     alt={current.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </div>
                 <div className="absolute -inset-4 bg-gradient-to-br from-primary/20 to-accent/20 blur-3xl -z-10 rounded-full" />
@@ -97,7 +97,7 @@ const FeaturedCarousel = () => {
                 </div>
                 
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold">${current.price}</span>
+                  <span className="text-4xl font-bold">€{current.price}</span>
                   <span className="text-muted-foreground">50ml</span>
                 </div>
 

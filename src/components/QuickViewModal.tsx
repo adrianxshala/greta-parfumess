@@ -56,13 +56,17 @@ const QuickViewModal = ({ product, onClose, onAddToCart }: QuickViewModalProps) 
                 </div>
 
                 {/* Product Image */}
-                {product.image && (
+                {product.image && product.image.trim() && (
                   <div className="mb-4 sm:mb-6">
-                    <div className="relative w-full h-48 sm:h-64 md:h-80 rounded-xl sm:rounded-2xl overflow-hidden bg-muted">
+                    <div className="relative w-full aspect-square sm:aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-transparent flex items-center justify-center">
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
+                        onError={(e) => {
+                          // Hide image if it fails to load
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
                       />
                     </div>
                   </div>
@@ -71,7 +75,7 @@ const QuickViewModal = ({ product, onClose, onAddToCart }: QuickViewModalProps) 
                 {/* Content */}
                 <div className="flex flex-col gap-4 sm:gap-6 max-w-2xl">
                   <div>
-                    <p className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">${product.price}</p>
+                    <p className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">€{product.price}</p>
                     <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                       {product.description}
                     </p>
@@ -106,7 +110,7 @@ const QuickViewModal = ({ product, onClose, onAddToCart }: QuickViewModalProps) 
                       Add to Cart
                     </Button>
                     <p className="text-xs text-center text-muted-foreground">
-                      Free shipping on orders over $150
+                      Free shipping on orders over €150
                     </p>
                   </div>
                 </div>

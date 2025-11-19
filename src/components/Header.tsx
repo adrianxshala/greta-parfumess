@@ -14,6 +14,8 @@ const Header = ({ onCartOpen, cartItemCount, onSearchOpen }: HeaderProps) => {
 
   const handleLogoClick = () => {
     navigate("/");
+    // Scroll to top when navigating home
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -23,13 +25,13 @@ const Header = ({ onCartOpen, cartItemCount, onSearchOpen }: HeaderProps) => {
       className="fixed top-0 left-0 right-0 z-50 glass-card border-b"
     >
       <nav className="container mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-        <div className="flex items-center gap-3 sm:gap-4">
+        <div className="flex items-center gap-3 sm:gap-4 ml-4 sm:ml-6 md:ml-8">
           <motion.h1
-            className="text-lg sm:text-xl md:text-2xl font-serif font-bold gradient-text cursor-pointer"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif font-bold gradient-text cursor-pointer"
             whileHover={{ scale: 1.05 }}
             onClick={handleLogoClick}
           >
-            Greta parfumes
+            GB
           </motion.h1>
         </div>
 

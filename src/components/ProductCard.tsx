@@ -34,12 +34,16 @@ const ProductCard = ({ product, onAddToCart, onQuickView }: ProductCardProps) =>
         onClick={handleCardClick}
       >
         {/* Product Image */}
-        {product.image && (
-          <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-muted">
+        {product.image && product.image.trim() && (
+          <div className="relative w-full aspect-square overflow-hidden bg-transparent">
             <img
               src={product.image}
               alt={product.name}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+              className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+              onError={(e) => {
+                // Hide image if it fails to load
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
             />
           </div>
         )}
@@ -51,7 +55,7 @@ const ProductCard = ({ product, onAddToCart, onQuickView }: ProductCardProps) =>
               <h3 className="font-serif text-lg sm:text-xl font-semibold truncate">{product.name}</h3>
               <p className="text-xs sm:text-sm text-muted-foreground capitalize mt-0.5">{product.category}</p>
             </div>
-            <p className="font-semibold text-base sm:text-lg whitespace-nowrap ml-2">${product.price}</p>
+            <p className="font-semibold text-base sm:text-lg whitespace-nowrap ml-2">€{product.price}</p>
           </div>
           
           {product.description && (
