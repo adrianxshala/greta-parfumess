@@ -44,88 +44,106 @@ const Hero = () => {
           {/* Mobile: Image First, Desktop: Text First */}
           {/* Floating Perfume Image - Prominent on Mobile */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, scale: 0.9, y: 20, filter: "blur(20px)" }}
+            animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1, ease: "easeOut" }}
             className="relative w-full order-1 lg:order-2 mt-4 sm:-mt-12 lg:mt-0"
           >
             <motion.div
               animate={{
-                y: [0, -15, 0],
-                rotate: [0, 3, 0],
+                y: [0, -10, 0],
               }}
               transition={{
-                duration: 4,
+                duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
               className="relative"
             >
               {/* Mobile App Card Style Container */}
-              <div className="relative bg-gradient-to-br from-primary/10 to-accent/10 rounded-3xl sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-8 backdrop-blur-sm border border-primary/20 shadow-2xl">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+                className="relative bg-gradient-to-br from-primary/10 to-accent/10 rounded-3xl sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-8 backdrop-blur-md border border-primary/20 shadow-2xl"
+              >
                 <motion.img
                   src={heroPerfume}
                   alt="Shishe Parfumi Luksoz"
+                  initial={{ filter: "blur(10px)" }}
+                  animate={{ filter: "blur(0px)" }}
+                  transition={{ delay: 0.5, duration: 1 }}
                   className="w-full max-w-[280px] sm:max-w-sm lg:max-w-md mx-auto drop-shadow-2xl"
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
                   whileTap={{ scale: 0.98 }}
                 />
 
                 {/* Glow effect behind bottle */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 blur-2xl sm:blur-3xl -z-10 rounded-full opacity-60" />
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 0.6, scale: 1 }}
+                  transition={{ delay: 0.7, duration: 1 }}
+                  className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 blur-2xl sm:blur-3xl -z-10 rounded-full"
+                />
 
                 {/* Decorative sparkles for mobile app feel */}
                 <motion.div
-                  animate={{ rotate: 360 }}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1, rotate: 360 }}
                   transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: "linear",
+                    opacity: { delay: 0.8, duration: 0.5 },
+                    scale: { delay: 0.8, duration: 0.5 },
+                    rotate: { duration: 20, repeat: Infinity, ease: "linear" },
                   }}
                   className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4"
                 >
                   <Sparkles className="h-6 w-6 sm:h-8 sm:w-8 text-primary/40" />
                 </motion.div>
-              </div>
+              </motion.div>
             </motion.div>
           </motion.div>
 
           {/* Text Content - Mobile App Style */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: 30, filter: "blur(20px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1, ease: "easeOut" }}
             className="space-y-5 sm:space-y-6 md:space-y-8 text-center lg:text-left order-2 lg:order-1 w-full"
           >
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
+              initial={{ opacity: 0, y: 20, filter: "blur(15px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ delay: 0.2, duration: 1, ease: "easeOut" }}
             >
               {/* Badge Style for Mobile */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 }}
+                initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
                 className="inline-block mb-3 sm:mb-4"
               >
-                <span className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/10 border border-primary/20 text-primary font-semibold text-xs sm:text-sm">
+                <span className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/10 border border-primary/20 text-primary font-semibold text-xs sm:text-sm backdrop-blur-sm">
                   KOLEKSION I RI 2025
                 </span>
               </motion.div>
 
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-serif font-bold leading-[1.1] mb-4 sm:mb-6">
+              <motion.h1 
+                initial={{ opacity: 0, y: 20, filter: "blur(15px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ delay: 0.4, duration: 1, ease: "easeOut" }}
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-serif font-bold leading-[1.1] mb-4 sm:mb-6"
+              >
                 Zbuloni{" "}
                 <span className="gradient-text block sm:inline">Aromën</span>
                 <br className="hidden sm:block" />
                 <span className="sm:ml-2">Tuaj të Veçantë</span>
-              </h1>
+              </motion.h1>
             </motion.div>
 
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
+              initial={{ opacity: 0, y: 20, filter: "blur(15px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ delay: 0.6, duration: 1, ease: "easeOut" }}
               className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed px-2 sm:px-0"
             >
               Shijoni koleksionin tonë të kujdesur të parfumeve luksoze. Çdo
@@ -134,26 +152,25 @@ const Hero = () => {
 
             {/* Mobile App Style Buttons */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
+              initial={{ opacity: 0, y: 20, filter: "blur(15px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ delay: 0.8, duration: 1, ease: "easeOut" }}
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-2 sm:pt-4"
             >
-              <Button
-                size="lg"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 hover-glow group h-14 sm:h-16 text-base sm:text-lg font-semibold w-full sm:w-auto rounded-2xl sm:rounded-2xl shadow-lg active:scale-95 transition-all"
-                onClick={() => navigate("/products")}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
-                Eksploroni Koleksionin
-                <ArrowRight className="ml-2 h-5 w-5 sm:h-6 sm:w-6 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2 hover:bg-primary/10 h-14 sm:h-16 text-base sm:text-lg w-full sm:w-auto rounded-2xl sm:rounded-2xl active:scale-95 transition-all backdrop-blur-sm"
-              >
-                Gjeni Aromën Tuaj
-              </Button>
+                <Button
+                  size="lg"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 hover-glow group h-14 sm:h-16 text-base sm:text-lg font-semibold w-full sm:w-auto rounded-2xl sm:rounded-2xl shadow-lg transition-all"
+                  onClick={() => navigate("/products")}
+                >
+                  Eksploroni Koleksionin
+                  <ArrowRight className="ml-2 h-5 w-5 sm:h-6 sm:w-6 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </motion.div>
             </motion.div>
           </motion.div>
         </div>

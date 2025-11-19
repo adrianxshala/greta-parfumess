@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { fetchProducts } from "@/services/products";
 import { Loader2, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface ProductGridProps {
   onAddToCart: (product: Product) => void;
@@ -72,31 +73,73 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
   return (
     <section id="products" className="py-8 sm:py-12 md:py-16 bg-gradient-to-b from-background to-muted/20">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="text-center mb-6 sm:mb-8 space-y-2 sm:space-y-3">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold">Koleksioni Ynë</h2>
-          <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-2">
+        <motion.div 
+          initial={{ opacity: 0, y: 30, filter: "blur(20px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="text-center mb-6 sm:mb-8 space-y-2 sm:space-y-3"
+        >
+          <motion.h2 
+            initial={{ opacity: 0, y: 20, filter: "blur(15px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 1, ease: "easeOut" }}
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold"
+          >
+            Koleksioni Ynë
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20, filter: "blur(15px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4, duration: 1, ease: "easeOut" }}
+            className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-2"
+          >
             Zbuloni parfumet tona të punuara me dorë, secili një udhëtim unik olfaktor
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Category Filter Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-4 sm:mb-6 md:mb-8 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
-          {categories.map((category) => (
-            <Button
+        <motion.div 
+          initial={{ opacity: 0, y: 20, filter: "blur(15px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ delay: 0.6, duration: 1, ease: "easeOut" }}
+          className="flex flex-wrap items-center justify-center gap-2 mb-4 sm:mb-6 md:mb-8 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0"
+        >
+          {categories.map((category, index) => (
+            <motion.div
               key={category.name}
-              variant={selectedCategory === category.value ? "default" : "outline"}
-              onClick={() => handleCategoryClick(category.value)}
-              size="sm"
-              className={
-                selectedCategory === category.value
-                  ? "bg-primary hover:bg-primary/90 text-xs sm:text-sm h-9 sm:h-10 px-4 sm:px-6 whitespace-nowrap"
-                  : "hover:bg-primary/10 text-xs sm:text-sm h-9 sm:h-10 px-4 sm:px-6 whitespace-nowrap"
-              }
+              initial={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              viewport={{ once: true }}
+              transition={{ 
+                delay: 0.7 + (index * 0.1), 
+                duration: 0.6, 
+                ease: "easeOut",
+                type: "spring",
+                stiffness: 200,
+                damping: 20
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              {category.name}
-            </Button>
+              <Button
+                variant={selectedCategory === category.value ? "default" : "outline"}
+                onClick={() => handleCategoryClick(category.value)}
+                size="sm"
+                className={
+                  selectedCategory === category.value
+                    ? "bg-primary hover:bg-primary/90 text-xs sm:text-sm h-9 sm:h-10 px-4 sm:px-6 whitespace-nowrap transition-all"
+                    : "hover:bg-primary/10 text-xs sm:text-sm h-9 sm:h-10 px-4 sm:px-6 whitespace-nowrap transition-all"
+                }
+              >
+                {category.name}
+              </Button>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {loading ? (
           <div className="flex items-center justify-center py-20">
@@ -116,29 +159,60 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-              {displayedProducts.map((product) => (
-                <ProductCard
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
+            >
+              {displayedProducts.map((product, index) => (
+                <motion.div
                   key={product.id}
-                  product={product}
-                  onAddToCart={onAddToCart}
-                  onQuickView={onQuickView}
-                />
+                  initial={{ opacity: 0, y: 30, filter: "blur(15px)", scale: 0.9 }}
+                  whileInView={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ 
+                    delay: index * 0.1,
+                    duration: 0.8,
+                    ease: "easeOut",
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 15
+                  }}
+                >
+                  <ProductCard
+                    product={product}
+                    onAddToCart={onAddToCart}
+                    onQuickView={onQuickView}
+                  />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
             
             {/* View All Products Button - Only show when "All" is selected and there are more products */}
             {hasMoreProducts && (
-              <div className="flex justify-center mt-8 sm:mt-12">
-                <Button
-                  onClick={handleViewAll}
-                  size="lg"
-                  className="bg-primary hover:bg-primary/90 hover-glow h-12 sm:h-14 px-8 sm:px-10 text-base sm:text-lg font-semibold"
+              <motion.div 
+                initial={{ opacity: 0, y: 20, filter: "blur(15px)" }}
+                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
+                className="flex justify-center mt-8 sm:mt-12"
+              >
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
-                  Shiko Të Gjitha Produktet
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </div>
+                  <Button
+                    onClick={handleViewAll}
+                    size="lg"
+                    className="bg-primary hover:bg-primary/90 hover-glow h-12 sm:h-14 px-8 sm:px-10 text-base sm:text-lg font-semibold transition-all"
+                  >
+                    Shiko Të Gjitha Produktet
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </motion.div>
+              </motion.div>
             )}
           </>
         )}
