@@ -28,8 +28,8 @@ const Header = ({ onCartOpen, cartItemCount, onSearchOpen }: HeaderProps) => {
   return (
     <motion.header
       initial={{ y: -100, opacity: 0 }}
-      animate={{ 
-        y: 0, 
+      animate={{
+        y: 0,
         opacity: 1,
       }}
       transition={{
@@ -39,13 +39,20 @@ const Header = ({ onCartOpen, cartItemCount, onSearchOpen }: HeaderProps) => {
         mass: 0.5,
       }}
       style={{
-        backdropFilter: isScrolled ? "blur(20px)" : "blur(10px)",
-        backgroundColor: isScrolled ? "rgba(255, 255, 255, 0.95)" : "rgba(255, 255, 255, 0.8)",
-        transition: "backdrop-filter 0.3s ease, background-color 0.3s ease",
+        backdropFilter: isScrolled ? "blur(20px)" : "blur(20px)",
+        backgroundColor: isScrolled
+          ? "rgba(255, 255, 255, 0.15)"
+          : "rgba(255, 255, 255, 0.15)",
+        transition:
+          "backdrop-filter 0.2s ease, background-color 0.3s ease, border-radius 0.3s ease",
       }}
-      className="fixed top-0 left-0 right-0 z-50 glass-card border-b"
+      className={`fixed top-3 left-3 right-3 z-50 border border-primary/20 ${
+        isScrolled
+          ? "rounded-b-2xl sm:rounded-b-3xl"
+          : "rounded-2xl sm:rounded-3xl"
+      }`}
     >
-      <motion.nav 
+      <motion.nav
         className="container mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -67,7 +74,12 @@ const Header = ({ onCartOpen, cartItemCount, onSearchOpen }: HeaderProps) => {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3, type: "spring", stiffness: 100, damping: 15 }}
+            transition={{
+              delay: 0.3,
+              type: "spring",
+              stiffness: 100,
+              damping: 15,
+            }}
           >
             <Button
               variant="ghost"
@@ -81,7 +93,12 @@ const Header = ({ onCartOpen, cartItemCount, onSearchOpen }: HeaderProps) => {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4, type: "spring", stiffness: 100, damping: 15 }}
+            transition={{
+              delay: 0.4,
+              type: "spring",
+              stiffness: 100,
+              damping: 15,
+            }}
           >
             <Button
               variant="ghost"

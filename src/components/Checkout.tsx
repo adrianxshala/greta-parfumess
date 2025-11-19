@@ -76,11 +76,25 @@ const Checkout = ({
 
     const message = encodeURIComponent(orderMessage);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-    window.open(whatsappUrl, "_blank");
+    
+    // Use window.location.href for better compatibility with popup blockers
+    // This works better in production environments like Vercel
+    const newWindow = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    
+    // Fallback: if popup is blocked, try direct navigation
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
+      // Try alternative method for mobile devices
+      window.location.href = whatsappUrl;
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Open WhatsApp IMMEDIATELY from user interaction (before any async operations)
+    // This prevents popup blockers from blocking the window.open() call
+    handleWhatsAppOrder();
+    
     setIsSubmitting(true);
 
     // Simulate API call
@@ -89,9 +103,6 @@ const Checkout = ({
     setIsSubmitting(false);
     setIsSuccess(true);
     toast.success("Order placed successfully!");
-
-    // Open WhatsApp with order details
-    handleWhatsAppOrder();
 
     // Clear cart after order is placed
     if (onOrderComplete) {

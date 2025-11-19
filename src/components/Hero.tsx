@@ -150,24 +150,24 @@ const Hero = () => {
               shishe tregon një histori, çdo aromë kap një moment.
             </motion.p>
 
-            {/* Mobile App Style Buttons */}
+            {/* Show All Products Button */}
             <motion.div
               initial={{ opacity: 0, y: 20, filter: "blur(15px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ delay: 0.8, duration: 1, ease: "easeOut" }}
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-2 sm:pt-4"
+              className="flex items-center justify-center lg:justify-start pt-2 sm:pt-4"
             >
               <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
                 <Button
                   size="lg"
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 hover-glow group h-14 sm:h-16 text-base sm:text-lg font-semibold w-full sm:w-auto rounded-2xl sm:rounded-2xl shadow-lg transition-all"
+                  className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white hover-glow group h-14 sm:h-16 px-8 sm:px-10 text-base sm:text-lg font-semibold rounded-full shadow-xl shadow-primary/30 transition-all"
                   onClick={() => navigate("/products")}
                 >
-                  Eksploroni Koleksionin
+                  Shiko Të Gjitha Produktet
                   <ArrowRight className="ml-2 h-5 w-5 sm:h-6 sm:w-6 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </motion.div>
