@@ -3,8 +3,8 @@ import { Product } from "@/types/product";
 import ProductCard from "./ProductCard";
 import { Button } from "@/components/ui/button";
 import { fetchProducts } from "@/services/products";
-import { Loader2, ArrowRight, Sparkles } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Loader2, ArrowRight, Sparkles, ArrowLeft } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 
 interface ProductGridProps {
@@ -29,7 +29,11 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const PRODUCT_LIMIT = 6; // Show only 6 products when "All" is selected
+  
+  // Show back button only on /products page
+  const showBackButton = showAllProducts && location.pathname === '/products';
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -66,11 +70,49 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
   };
 
   const handleViewAll = () => {
+    // Save scroll position before navigating to /products
+    sessionStorage.setItem('homeScrollPosition', window.scrollY.toString());
     navigate("/products");
+  };
+
+  const handleBackClick = () => {
+    // Save current scroll position before navigating
+    sessionStorage.setItem('homeScrollPosition', window.scrollY.toString());
+    navigate("/");
+    // Restore scroll position after navigation
+    setTimeout(() => {
+      const savedPosition = sessionStorage.getItem('homeScrollPosition');
+      if (savedPosition) {
+        window.scrollTo({
+          top: parseInt(savedPosition, 10),
+          behavior: 'instant'
+        });
+        sessionStorage.removeItem('homeScrollPosition');
+      }
+    }, 150);
   };
 
   return (
     <section id="products" className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-background via-primary/5 to-muted/30 relative overflow-hidden">
+      {/* Fixed Back Button - Only show on /products page */}
+      {showBackButton && (
+        <div className="fixed top-20 sm:top-24 left-3 sm:left-6 z-40">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Button
+              variant="ghost"
+              onClick={handleBackClick}
+              className="h-11 sm:h-12 px-3 sm:px-4 rounded-full backdrop-blur-md bg-background/90 border border-primary/30 shadow-xl hover:bg-background hover:shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95"
+            >
+              <ArrowLeft className="h-5 w-5 sm:h-5 sm:w-5 sm:mr-2" />
+              <span className="hidden sm:inline text-sm sm:text-base font-medium">Back to Home</span>
+            </Button>
+          </motion.div>
+        </div>
+      )}
       {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(8)].map((_, i) => (

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import Hero from "@/components/Hero";
 import ProductGrid from "@/components/ProductGrid";
@@ -15,6 +15,20 @@ const Index = () => {
   const { onAddToCart, onQuickView } = useOutletContext<OutletContext>();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
+  // Restore scroll position when coming back from /products
+  useEffect(() => {
+    const savedPosition = sessionStorage.getItem('homeScrollPosition');
+    if (savedPosition) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: parseInt(savedPosition, 10),
+          behavior: 'instant'
+        });
+        sessionStorage.removeItem('homeScrollPosition');
+      }, 100);
+    }
+  }, []);
+
   const handleCategorySelect = (category: string | null) => {
     setSelectedCategory(category);
   };
@@ -22,13 +36,13 @@ const Index = () => {
   return (
     <main>
       <Hero />
+      <FeaturedCarousel />
       <ProductGrid
         onAddToCart={onAddToCart}
         onQuickView={onQuickView}
         selectedCategory={selectedCategory}
         onCategorySelect={handleCategorySelect}
       />
-      <FeaturedCarousel />
       <Newsletter />
     </main>
   );
