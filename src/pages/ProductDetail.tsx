@@ -139,29 +139,15 @@ const ProductDetail = () => {
 
     const phoneNumber = "38349153002"; // +383 49 153 002 without + and spaces
 
-    // Make the message more cute and friendly with emojis and better formatting
-    const categoryEmoji: Record<string, string> = {
-      men: "👔",
-      woman: "💄",
-      "luxury-line": "✨",
-      unisex: "🌟",
-      kids: "🎈",
-    };
-
-    const emoji = categoryEmoji[product.category] || "🌸";
-
+    // Clean and professional message without emojis
     const message = encodeURIComponent(
-      `👋 Përshëndetje! ✨\n\n` +
-        `Jam shumë i interesuar për këtë produkt të bukur:\n\n` +
-        `━━━━━━━━━━━━━━━━━━\n` +
-        `${emoji} *${product.name}*\n` +
-        `━━━━━━━━━━━━━━━━━━\n\n` +
-        `📏 *Madhësia:* ${selectedSize}\n` +
-        `💰 *Çmimi:* €${currentPrice.toFixed(2)}\n` +
-        `🏷️ *Kategoria:* ${product.category}\n` +
-        `📦 *Sasia:* ${quantity}\n\n` +
-        `💭 A mund të më jepni më shumë informacion për këtë produkt?\n` +
-        `Faleminderit! 🙏✨`
+      `Përshëndetje!\n\n` +
+        `Jam i interesuar për:\n` +
+        `*${product.name}*\n\n` +
+        `Madhësia: ${selectedSize}\n` +
+        `Çmimi: €${currentPrice.toFixed(2)}\n` +
+        `Sasia: ${quantity}\n\n` +
+        `A mund të më jepni më shumë informacion?`
     );
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     // Use window.location.href to open directly in WhatsApp without popup dialog

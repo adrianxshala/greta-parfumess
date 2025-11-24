@@ -48,31 +48,28 @@ const Checkout = ({
   const handleWhatsAppOrder = () => {
     const phoneNumber = "38349153002"; // +383 49 153 002 without + and spaces
 
-    // Build super compact, mobile-optimized order message
-    let orderMessage = `🛍️ *POROSI E RE*\n\n`;
+    // Clean and professional order message
+    let orderMessage = `*POROSI E RE*\n\n`;
 
-    // Customer Information - minimal format
-    orderMessage += `👤 *${formData.fullName}*\n`;
-    orderMessage += `📱 ${formData.phone}\n`;
-    orderMessage += `📍 ${formData.address}, ${formData.city}\n`;
+    // Customer Information
+    orderMessage += `${formData.fullName}\n`;
+    orderMessage += `${formData.phone}\n`;
+    orderMessage += `${formData.address}, ${formData.city}\n`;
     if (formData.notes && formData.notes.trim()) {
-      orderMessage += `💬 ${formData.notes}\n`;
+      orderMessage += `${formData.notes}\n`;
     }
 
-    // Products - numbered list format
-    orderMessage += `\n🛒 *ARTIKUJT:*\n`;
-    items.forEach((item, index) => {
-      const sizeText = item.selectedSize ? ` (${item.selectedSize})` : "";
-      const itemTotal = (item.price * item.quantity).toFixed(2);
-      orderMessage += `${index + 1}. ${item.name}${sizeText}\n`;
-      orderMessage += `   └─ ${item.quantity}×€${item.price.toFixed(2)} = *€${itemTotal}*\n`;
+    // Products
+    orderMessage += `\n*Artikujt:*\n`;
+    items.forEach((item) => {
+      const sizeText = item.selectedSize ? ` ${item.selectedSize}` : "";
+      orderMessage += `${item.name}${sizeText} - ${item.quantity}×€${item.price.toFixed(2)}\n`;
     });
 
-    // Payment & Total
-    orderMessage += `\n💰 *TOTALI: €${total.toFixed(2)}*\n`;
-    orderMessage += `📦 Pagesë në Dorëzim\n\n`;
-    orderMessage += `✅ Ju lutem konfirmoni porosinë.\n`;
-    orderMessage += `Faleminderit! 🙏✨`;
+    // Total
+    orderMessage += `\n*Totali: €${total.toFixed(2)}*\n`;
+    orderMessage += `Pagesë në Dorëzim\n\n`;
+    orderMessage += `Ju lutem konfirmoni porosinë.`;
 
     const message = encodeURIComponent(orderMessage);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
