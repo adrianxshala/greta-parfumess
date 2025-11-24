@@ -54,11 +54,10 @@ const ProductDetail = () => {
           setSelectedSize(defaultSize);
           setCurrentPrice(data.price_35ml || data.price || 0);
         } else {
-          setError("Produkti nuk u gjet");
+          setError("Product not found");
         }
       } catch (err) {
-        setError("Dështoi ngarkimi i produktit. Ju lutem provoni përsëri më vonë.");
-        console.error("Error loading product:", err);
+        setError("Failed to load product. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -71,7 +70,7 @@ const ProductDetail = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-4 pt-20">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-muted-foreground">Duke ngarkuar produktin...</p>
+        <p className="text-muted-foreground">Loading product...</p>
       </div>
     );
   }
@@ -79,13 +78,13 @@ const ProductDetail = () => {
   if (error || !product) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-4 pt-20">
-        <h2 className="text-2xl font-serif font-semibold">Produkti Nuk U Gjet</h2>
+        <h2 className="text-2xl font-serif font-semibold">Product Not Found</h2>
         <p className="text-muted-foreground">
-          {error || "Produkti që po kërkoni nuk ekziston."}
+          {error || "The product you're looking for doesn't exist."}
         </p>
         <Button onClick={() => navigate("/")} variant="outline">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Kthehu në Shtëpi
+          Back to Home
         </Button>
       </div>
     );
@@ -126,7 +125,7 @@ const ProductDetail = () => {
 
     // Show toast with size info
     toast.success(
-      `U shtua ${quantity} × ${product.name} (${selectedSize}) në shportë`
+      `Added ${quantity} × ${product.name} (${selectedSize}) to cart`
     );
   };
 
@@ -157,16 +156,19 @@ const ProductDetail = () => {
 
   return (
     <main className="pt-16 sm:pt-20">
-      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
-        {/* Back Button */}
+      {/* Fixed Back Button */}
+      <div className="fixed top-20 sm:top-24 left-4 sm:left-6 z-40">
         <Button
           variant="ghost"
           onClick={() => navigate("/")}
-          className="mb-4 sm:mb-6 md:mb-8 h-10 sm:h-11"
+          className="h-10 sm:h-11 backdrop-blur-md bg-background/80 border border-primary/20 shadow-lg hover:bg-background/90"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          <span className="text-sm sm:text-base">Kthehu te Produktet</span>
+          <span className="text-sm sm:text-base">Back to Products</span>
         </Button>
+      </div>
+
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
 
         <div className="max-w-4xl mx-auto">
           {/* Product Image */}
@@ -210,7 +212,7 @@ const ProductDetail = () => {
               {/* Size Selection Buttons */}
               <div className="mb-4 sm:mb-6">
                 <p className="text-sm sm:text-base font-medium mb-2 sm:mb-3">
-                  Zgjidh Madhësinë:
+                  Select Size:
                 </p>
                 <div className="flex flex-wrap gap-2 sm:gap-3">
                   {(["15ml", "35ml", "100ml"] as ProductSize[]).map((size) => {
@@ -256,7 +258,7 @@ const ProductDetail = () => {
             {product.notes && product.notes.length > 0 && (
               <div>
                 <h3 className="font-semibold mb-3 sm:mb-4 text-base sm:text-lg">
-                  Notat e Aromës
+                  Scent Notes
                 </h3>
                 <div className="flex flex-wrap gap-2 sm:gap-3">
                   {product.notes.map((note) => (
@@ -275,7 +277,7 @@ const ProductDetail = () => {
             {/* Quantity Selector */}
             <div className="flex items-center gap-3 sm:gap-4 py-2 sm:py-4 border-y">
               <span className="font-medium text-sm sm:text-base">
-                Sasia:
+                Quantity:
               </span>
               <div className="flex items-center gap-2 sm:gap-3">
                 <Button
@@ -308,7 +310,7 @@ const ProductDetail = () => {
                 onClick={handleAddToCart}
               >
                 <ShoppingCart className="mr-2 h-5 w-5" />
-                Shto në Shportë
+                Add to Cart
               </Button>
 
               <Button
@@ -316,12 +318,12 @@ const ProductDetail = () => {
                 onClick={handleWhatsAppClick}
               >
                 <MessageCircle className="mr-2 h-5 w-5" />
-                Kontakto nëpërmjet WhatsApp
+                Contact via WhatsApp
               </Button>
             </div>
 
             <p className="text-sm text-center text-muted-foreground">
-              Transport falas për porosi mbi €150
+              Free shipping on orders over €150
             </p>
           </motion.div>
         </div>

@@ -26,7 +26,6 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
           const data = await fetchProducts();
           setProducts(data);
         } catch (error) {
-          console.error("Error loading products:", error);
         } finally {
           setLoading(false);
         }
@@ -47,7 +46,6 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
 
   const handleProductClick = (productId: string) => {
     if (!productId) {
-      console.error('Product ID is missing');
       return;
     }
     
@@ -55,7 +53,6 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
       const encodedId = encodeURIComponent(String(productId).trim());
       navigate(`/product/${encodedId}`);
     } catch (error) {
-      console.error('Error navigating to product:', error);
     }
     onClose();
     setQuery("");

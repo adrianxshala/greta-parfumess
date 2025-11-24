@@ -12,7 +12,7 @@ const Newsletter = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      toast.success("Faleminderit për abonimin! Kontrolloni email-in tuaj për një dhuratë mirëseardhjeje.");
+      toast.success("Thank you for subscribing! Check your inbox for a welcome gift.");
       setEmail("");
     }
   };
@@ -66,7 +66,7 @@ const Newsletter = () => {
             >
               <Input
                 type="email"
-                  placeholder="Shkruani adresën tuaj të email-it"
+                  placeholder="Enter your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onFocus={() => setIsFocused(true)}

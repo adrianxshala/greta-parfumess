@@ -35,10 +35,10 @@ const AppLayout = () => {
             : item
         )
       );
-      toast.success(`U shtua ${quantity} artikull(ë) në shportë`);
+      toast.success(`Added ${quantity} item(s) to cart`);
     } else {
       setCartItems([...cartItems, cartItem]);
-      toast.success(`U shtua ${quantity} artikull(ë) në shportë`);
+      toast.success(`Added ${quantity} item(s) to cart`);
     }
   };
 
@@ -56,7 +56,7 @@ const AppLayout = () => {
 
   const handleRemoveFromCart = (id: string, selectedSize?: string) => {
     setCartItems(cartItems.filter((item) => !(item.id === id && item.selectedSize === selectedSize)));
-    toast.success("U hoq nga shporta");
+    toast.success("Removed from cart");
   };
 
   // Only show Header on certain pages if needed, or show it everywhere

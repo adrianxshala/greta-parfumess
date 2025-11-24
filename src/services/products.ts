@@ -9,7 +9,6 @@ export const fetchProducts = async (): Promise<Product[]> => {
       .order('id', { ascending: false });
 
     if (error) {
-      console.error('Error fetching products:', error);
       throw error;
     }
 
@@ -27,7 +26,6 @@ export const fetchProducts = async (): Promise<Product[]> => {
       price_100ml: product.price_100ml ? parseFloat(product.price_100ml) : undefined,
     })) || [];
   } catch (error) {
-    console.error('Error in fetchProducts:', error);
     return [];
   }
 };
@@ -46,7 +44,6 @@ export const fetchProductById = async (id: string): Promise<Product | null> => {
       .single();
 
     if (error) {
-      console.error('Error fetching product:', error);
       return null;
     }
 
@@ -68,7 +65,6 @@ export const fetchProductById = async (id: string): Promise<Product | null> => {
       price_100ml: data.price_100ml ? parseFloat(data.price_100ml) : undefined,
     };
   } catch (error) {
-    console.error('Error in fetchProductById:', error);
     return null;
   }
 };

@@ -56,7 +56,7 @@ const ShoppingCart = ({
               <div className="flex items-center gap-2 sm:gap-3">
                 <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6" />
                 <h2 className="text-lg sm:text-xl font-serif font-semibold">
-                  Shporta e Blerjeve
+                  Shopping Cart
                 </h2>
               </div>
               <Button
@@ -75,10 +75,10 @@ const ShoppingCart = ({
                 <div className="flex flex-col items-center justify-center h-full text-center py-12 px-4">
                   <ShoppingBag className="h-12 w-12 sm:h-16 sm:w-16 text-muted-foreground/50 mb-4" />
                   <p className="text-base sm:text-lg font-medium mb-2">
-                    Shporta juaj është e zbrazët
+                    Your cart is empty
                   </p>
                   <p className="text-xs sm:text-sm text-muted-foreground">
-                    Shtoni disa parfume për të filluar
+                    Add some fragrances to get started
                   </p>
                 </div>
               ) : (
@@ -172,14 +172,14 @@ const ShoppingCart = ({
             {items.length > 0 && (
               <div className="border-t p-4 sm:p-6 space-y-3 sm:space-y-4 bg-background">
                 <div className="flex justify-between text-base sm:text-lg font-semibold">
-                  <span>Totali</span>
+                  <span>Total</span>
                   <span>€{total.toFixed(2)}</span>
                 </div>
                 <Button
                   className="w-full bg-primary hover:bg-primary/90 hover-glow h-12 sm:h-14 text-base sm:text-lg font-semibold"
                   onClick={onCheckout}
                 >
-                  Porosit
+                  Checkout
                 </Button>
               </div>
             )}

@@ -16,12 +16,12 @@ interface ProductGridProps {
 }
 
 const categories = [
-  { name: "Të Gjitha", value: null },
-  { name: "Burra", value: "men" },
-  { name: "Gra", value: "woman" },
-  { name: "Linjë Luksoze", value: "luxury-line" },
+  { name: "All", value: null },
+  { name: "Men", value: "men" },
+  { name: "Woman", value: "woman" },
+  { name: "Luxury Line", value: "luxury-line" },
   { name: "Unisex", value: "unisex" },
-  { name: "Fëmijë", value: "kids" },
+  { name: "Kids", value: "kids" },
 ];
 
 const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySelect, showAllProducts = false }: ProductGridProps) => {
@@ -39,8 +39,7 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
         const data = await fetchProducts();
         setProducts(data);
       } catch (err) {
-        setError("Dështoi ngarkimi i produkteve. Ju lutem provoni përsëri më vonë.");
-        console.error("Error loading products:", err);
+        setError("Failed to load products. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -126,7 +125,7 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
             transition={{ delay: 0.2, duration: 1, ease: "easeOut" }}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent"
           >
-            Koleksioni Ynë
+            Our Collection
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20, filter: "blur(15px)" }}
@@ -135,7 +134,7 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
             transition={{ delay: 0.4, duration: 1, ease: "easeOut" }}
             className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-2 leading-relaxed"
           >
-            Zbuloni parfumet tona të punuara me dorë, secili një udhëtim unik olfaktor ✨
+            Discover our handcrafted fragrances, each a unique olfactory journey ✨
           </motion.p>
         </motion.div>
 
@@ -183,7 +182,7 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <span className="ml-3 text-muted-foreground">Duke ngarkuar produktet...</span>
+            <span className="ml-3 text-muted-foreground">Loading products...</span>
           </div>
         ) : error ? (
           <div className="text-center py-12">
@@ -194,7 +193,7 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
           </div>
         ) : displayedProducts.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground text-lg">Nuk u gjetën produkte në këtë kategori.</p>
+            <p className="text-muted-foreground text-lg">No products found in this category.</p>
           </div>
         ) : (
           <>

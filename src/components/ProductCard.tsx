@@ -21,71 +21,34 @@ const ProductCard = ({
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    // 🛠️ Debugging Step 1: Console.log produktin
-    console.log("🛠️ [ProductCard] handleCardClick triggered");
-    console.log("📦 Full Product Object:", product);
-    console.log("🆔 Product ID:", product?.id);
-    console.log("📝 Product Name:", product?.name);
-    console.log("🔍 Product Type:", typeof product);
-    console.log("🔍 ID Type:", typeof product?.id);
-
-    // ✅ Type Safety Check
+    // Type Safety Check
     if (!product) {
-      console.error("❌ Product is undefined or null");
       return;
     }
 
     if (!product.id) {
-      console.error("❌ Product ID is missing");
-      console.error("📦 Product data:", JSON.stringify(product, null, 2));
       return;
     }
 
     // Ensure ID is a valid string and encode it properly
     const productId = String(product.id).trim();
     if (!productId) {
-      console.error("❌ Product ID is empty after string conversion");
       return;
     }
-
-    // 🛠️ Debugging Step 2: Verify Route Path
-    const routePath = `/product/${productId}`;
-    console.log("🛛 Route Path (before encoding):", routePath);
-
-    // Check if ID contains special characters that need encoding
-    const needsEncoding = /[^a-zA-Z0-9-_]/.test(productId);
-    console.log("🔐 Needs Encoding:", needsEncoding);
 
     try {
       // Encode the ID to handle any special characters
       const encodedId = encodeURIComponent(productId);
       const finalPath = `/product/${encodedId}`;
 
-      console.log("🛛 Final Route Path:", finalPath);
-      console.log("🔐 Encoded ID:", encodedId);
-      console.log("✅ Navigating to:", finalPath);
-
-      // 🛠️ Debugging Step 3: Check for External URLs (should not be)
-      if (productId.startsWith("http://") || productId.startsWith("https://")) {
-        console.warn("⚠️ Warning: Product ID appears to be an external URL!");
-        console.warn("⚠️ This might cause routing issues. ID:", productId);
-      }
-
       // Navigate using React Router v6 syntax
       navigate(finalPath, { replace: false });
-
-      console.log("✅ Navigation successful");
     } catch (error) {
-      console.error("❌ Error navigating to product:", error);
-      console.error("📦 Product data at error:", product);
-      console.error("🆔 Product ID at error:", productId);
-
       // Fallback: try without encoding
       try {
-        console.log("🔄 Attempting fallback navigation without encoding...");
         navigate(`/product/${productId}`, { replace: false });
       } catch (fallbackError) {
-        console.error("❌ Fallback navigation also failed:", fallbackError);
+        // Silent fail - navigation error
       }
     }
   };
@@ -212,7 +175,7 @@ const ProductCard = ({
                 }}
               >
                 <Eye className="h-4 w-4 sm:mr-2" />
-                <span className="hidden sm:inline">Shiko Shpejt</span>
+                <span className="hidden sm:inline">Quick View</span>
               </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -225,8 +188,8 @@ const ProductCard = ({
                 }}
               >
                 <ShoppingCart className="h-4 w-4 sm:mr-2" />
-                <span className="hidden sm:inline">Shto në Shportë</span>
-                <span className="sm:hidden">Shto</span>
+                <span className="hidden sm:inline">Add to Cart</span>
+                <span className="sm:hidden">Add</span>
               </Button>
             </motion.div>
           </div>
