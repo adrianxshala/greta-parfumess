@@ -1,37 +1,66 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
-import perfume1 from "@/assets/perfume-1.jpg";
-import perfume2 from "@/assets/perfume-2.jpg";
-import perfume3 from "@/assets/perfume-3.jpg";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { fetchProducts } from "@/services/products";
+import { Product } from "@/types/product";
 
-const featuredProducts = [
-  {
-    id: 1,
-    name: "Limited Edition: Midnight Rose",
-    description: "An exclusive blend of black roses and midnight jasmine",
-    price: 249,
-    image: perfume1,
-  },
-  {
-    id: 2,
-    name: "Summer Collection: Purple Dream",
-    description: "Fresh lavender fields meet ocean breeze",
-    price: 189,
-    image: perfume2,
-  },
-  {
-    id: 3,
-    name: "Bestseller: Golden Hour",
-    description: "Warm amber and citrus create the perfect sunset moment",
-    price: 199,
-    image: perfume3,
-  },
+// Featured product names to display
+const featuredProductNames = [
+  "Acqua di Gioia – Armani",
+  "Chloe – Chloe",
+  "Omnia Amethyste – Bulgaria"
 ];
 
 const FeaturedCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadFeaturedProducts = async () => {
+      try {
+        setLoading(true);
+        const allProducts = await fetchProducts();
+        
+        // Filter products by name (case-insensitive partial match)
+        const filtered = featuredProductNames
+          .map(name => {
+            // Find product that matches the name (allowing for variations)
+            return allProducts.find(product => {
+              const productName = product.name.toLowerCase().trim();
+              const searchName = name.toLowerCase().trim();
+              
+              // Try exact match first
+              if (productName === searchName) return true;
+              
+              // Try partial match - check if key parts match
+              // Extract main name parts (before "–" or "-")
+              const productMain = productName.split(/[–-]/)[0].trim();
+              const searchMain = searchName.split(/[–-]/)[0].trim();
+              
+              if (productMain.includes(searchMain) || searchMain.includes(productMain)) {
+                return true;
+              }
+              
+              // Check if product name contains the search name or vice versa
+              return productName.includes(searchName) || searchName.includes(productName);
+            });
+          })
+          .filter((product): product is Product => product !== undefined);
+        
+        setFeaturedProducts(filtered);
+      } catch (error) {
+        // Silent fail - will show empty state
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadFeaturedProducts();
+  }, []);
 
   const next = () => {
     setCurrentIndex((prev) => (prev + 1) % featuredProducts.length);
@@ -40,6 +69,19 @@ const FeaturedCarousel = () => {
   const prev = () => {
     setCurrentIndex((prev) => (prev - 1 + featuredProducts.length) % featuredProducts.length);
   };
+
+  const handleShopNow = () => {
+    if (featuredProducts[currentIndex]) {
+      const product = featuredProducts[currentIndex];
+      const encodedId = encodeURIComponent(product.id);
+      navigate(`/product/${encodedId}`);
+    }
+  };
+
+  // Don't render if loading or no products
+  if (loading || featuredProducts.length === 0) {
+    return null;
+  }
 
   const current = featuredProducts[currentIndex];
 
@@ -71,12 +113,18 @@ const FeaturedCarousel = () => {
                 className="relative"
               >
                 <div className="aspect-square rounded-2xl overflow-hidden bg-transparent flex items-center justify-center">
-                  <img
-                    src={current.image}
-                    alt={current.name}
-                    loading="lazy"
-                    className="w-full h-full object-contain"
-                  />
+                  {current.image ? (
+                    <img
+                      src={current.image}
+                      alt={current.name}
+                      loading="lazy"
+                      className="w-full h-full object-contain"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
+                      <span className="text-muted-foreground">No image</span>
+                    </div>
+                  )}
                 </div>
                 <div className="absolute -inset-4 bg-gradient-to-br from-primary/20 to-accent/20 blur-3xl -z-10 rounded-full" />
               </motion.div>
@@ -92,17 +140,23 @@ const FeaturedCarousel = () => {
                   <h3 className="text-3xl md:text-4xl font-serif font-bold mb-4">
                     {current.name}
                   </h3>
-                  <p className="text-lg text-muted-foreground">
-                    {current.description}
-                  </p>
+                  {current.description && (
+                    <p className="text-lg text-muted-foreground">
+                      {current.description}
+                    </p>
+                  )}
                 </div>
                 
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold">€{current.price}</span>
-                  <span className="text-muted-foreground">50ml</span>
+                  <span className="text-4xl font-bold">€{current.price.toFixed(2)}</span>
+                  <span className="text-muted-foreground">35ml</span>
                 </div>
 
-                <Button size="lg" className="bg-primary hover:bg-primary/90 hover-glow">
+                <Button 
+                  size="lg" 
+                  className="bg-primary hover:bg-primary/90 hover-glow"
+                  onClick={handleShopNow}
+                >
                   Shop Now
                 </Button>
               </motion.div>

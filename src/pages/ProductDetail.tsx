@@ -133,6 +133,22 @@ const ProductDetail = () => {
     setQuantity(Math.max(1, quantity + delta));
   };
 
+  const handleBackClick = () => {
+    navigate("/products");
+    // Restore scroll position and category after navigation
+    setTimeout(() => {
+      const savedPosition = sessionStorage.getItem('productsScrollPosition');
+      if (savedPosition) {
+        window.scrollTo({
+          top: parseInt(savedPosition, 10),
+          behavior: 'instant'
+        });
+        sessionStorage.removeItem('productsScrollPosition');
+      }
+      // Category will be restored automatically by Products component
+    }, 150);
+  };
+
   const handleWhatsAppClick = () => {
     if (!product) return;
 
@@ -156,16 +172,22 @@ const ProductDetail = () => {
 
   return (
     <main className="pt-16 sm:pt-20">
-      {/* Fixed Back Button */}
-      <div className="fixed top-20 sm:top-24 left-4 sm:left-6 z-40">
-        <Button
-          variant="ghost"
-          onClick={() => navigate("/")}
-          className="h-10 sm:h-11 backdrop-blur-md bg-background/80 border border-primary/20 shadow-lg hover:bg-background/90"
+      {/* Fixed Back Button - Beautiful mobile design */}
+      <div className="fixed top-20 sm:top-24 left-3 sm:left-6 z-40">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
         >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          <span className="text-sm sm:text-base">Back to Products</span>
-        </Button>
+          <Button
+            variant="ghost"
+            onClick={handleBackClick}
+            className="h-11 sm:h-12 px-3 sm:px-4 rounded-full backdrop-blur-md bg-background/90 border border-primary/30 shadow-xl hover:bg-background hover:shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95"
+          >
+            <ArrowLeft className="h-5 w-5 sm:h-5 sm:w-5 sm:mr-2" />
+            <span className="hidden sm:inline text-sm sm:text-base font-medium">Back to Products</span>
+          </Button>
+        </motion.div>
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">

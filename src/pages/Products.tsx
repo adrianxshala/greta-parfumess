@@ -10,10 +10,18 @@ interface OutletContext {
 
 const Products = () => {
   const { onAddToCart, onQuickView } = useOutletContext<OutletContext>();
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(() => {
+    // Restore category from sessionStorage on mount
+    const savedCategory = sessionStorage.getItem('productsSelectedCategory');
+    return savedCategory || null;
+  });
 
   const handleCategorySelect = (category: string | null) => {
     setSelectedCategory(category);
+    // Clear saved category when manually selecting
+    if (category === null) {
+      sessionStorage.removeItem('productsSelectedCategory');
+    }
   };
 
   return (

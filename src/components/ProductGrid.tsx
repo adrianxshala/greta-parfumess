@@ -222,6 +222,7 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
                     product={product}
                     onAddToCart={onAddToCart}
                     onQuickView={onQuickView}
+                    currentCategory={selectedCategory}
                   />
                 </motion.div>
               ))}

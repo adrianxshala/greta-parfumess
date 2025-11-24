@@ -1,19 +1,56 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
   const [isFocused, setIsFocused] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      toast.success("Thank you for subscribing! Check your inbox for a welcome gift.");
-      setEmail("");
+    if (!email || isSubmitting) return;
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Ju lutem shkruani një email të vlefshëm");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Save email to Supabase
+      const { error } = await supabase
+        .from('newsletter_subscriptions')
+        .insert([
+          { 
+            email: email.toLowerCase().trim(),
+            is_active: true
+          }
+        ]);
+
+      if (error) {
+        // Check if email already exists
+        if (error.code === '23505') {
+          toast.info("Ky email është tashmë i abonuar!");
+        } else {
+          throw error;
+        }
+      } else {
+        toast.success("Faleminderit për abonimin! Kontrolloni email-in tuaj për një dhuratë mirëseardhjeje.");
+        setEmail("");
+      }
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+      toast.error("Diçka shkoi keq. Ju lutem provoni përsëri.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -77,10 +114,20 @@ const Newsletter = () => {
               <Button
                 type="submit"
                 size="lg"
-                className="rounded-full bg-primary hover:bg-primary/90 hover-glow"
+                disabled={isSubmitting}
+                className="rounded-full bg-primary hover:bg-primary/90 hover-glow disabled:opacity-50"
               >
-                Abonohu
-                <Send className="ml-2 h-4 w-4" />
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                    <span className="ml-2">Duke u abonuar...</span>
+                  </>
+                ) : (
+                  <>
+                    Abonohu
+                    <Send className="ml-2 h-4 w-4" />
+                  </>
+                )}
               </Button>
             </motion.div>
           </motion.form>

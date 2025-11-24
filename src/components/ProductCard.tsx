@@ -9,12 +9,14 @@ interface ProductCardProps {
   product: Product;
   onAddToCart: (product: Product) => void;
   onQuickView: (product: Product) => void;
+  currentCategory?: string | null;
 }
 
 const ProductCard = ({
   product,
   onAddToCart,
   onQuickView,
+  currentCategory,
 }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
@@ -37,6 +39,12 @@ const ProductCard = ({
     }
 
     try {
+      // Save scroll position and category before navigating
+      sessionStorage.setItem('productsScrollPosition', window.scrollY.toString());
+      if (currentCategory !== undefined) {
+        sessionStorage.setItem('productsSelectedCategory', currentCategory || '');
+      }
+      
       // Encode the ID to handle any special characters
       const encodedId = encodeURIComponent(productId);
       const finalPath = `/product/${encodedId}`;
