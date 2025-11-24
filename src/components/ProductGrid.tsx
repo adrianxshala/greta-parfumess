@@ -16,12 +16,12 @@ interface ProductGridProps {
 }
 
 const categories = [
-  { name: "All", value: null },
-  { name: "Men", value: "men" },
-  { name: "Woman", value: "woman" },
-  { name: "Luxury Line", value: "luxury-line" },
+  { name: "Të Gjitha", value: null },
+  { name: "Burra", value: "men" },
+  { name: "Gra", value: "woman" },
+  { name: "Linjë Luksoze", value: "luxury-line" },
   { name: "Unisex", value: "unisex" },
-  { name: "Kids", value: "kids" },
+  { name: "Fëmijë", value: "kids" },
 ];
 
 const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySelect, showAllProducts = false }: ProductGridProps) => {
@@ -39,7 +39,7 @@ const ProductGrid = ({ onAddToCart, onQuickView, selectedCategory, onCategorySel
         const data = await fetchProducts();
         setProducts(data);
       } catch (err) {
-        setError("Failed to load products. Please try again later.");
+        setError("Dështoi ngarkimi i produkteve. Ju lutem provoni përsëri më vonë.");
         console.error("Error loading products:", err);
       } finally {
         setLoading(false);

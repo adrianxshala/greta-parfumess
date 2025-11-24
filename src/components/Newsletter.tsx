@@ -12,7 +12,7 @@ const Newsletter = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      toast.success("Thank you for subscribing! Check your inbox for a welcome gift.");
+      toast.success("Faleminderit për abonimin! Kontrolloni email-in tuaj për një dhuratë mirëseardhjeje.");
       setEmail("");
     }
   };
@@ -34,7 +34,7 @@ const Newsletter = () => {
               transition={{ delay: 0.1 }}
               className="text-4xl md:text-5xl font-serif font-bold"
             >
-              Join Our Fragrance Club
+              Bëhu Pjesë e Klubit tonë të Aromave
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -43,7 +43,7 @@ const Newsletter = () => {
               transition={{ delay: 0.2 }}
               className="text-lg text-muted-foreground"
             >
-              Subscribe to receive exclusive offers, new arrivals, and scent guides
+              Abonohu për të marrë oferta ekskluzive, produkte të reja dhe udhëzime për aromat
             </motion.p>
           </div>
 
@@ -66,7 +66,7 @@ const Newsletter = () => {
             >
               <Input
                 type="email"
-                placeholder="Enter your email address"
+                  placeholder="Shkruani adresën tuaj të email-it"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onFocus={() => setIsFocused(true)}
@@ -79,7 +79,7 @@ const Newsletter = () => {
                 size="lg"
                 className="rounded-full bg-primary hover:bg-primary/90 hover-glow"
               >
-                Subscribe
+                Abonohu
                 <Send className="ml-2 h-4 w-4" />
               </Button>
             </motion.div>
@@ -92,7 +92,7 @@ const Newsletter = () => {
             transition={{ delay: 0.4 }}
             className="text-sm text-muted-foreground"
           >
-            Get 15% off your first order when you subscribe
+            Merrni 15% zbritje për porosinë tuaj të parë kur abonoheni
           </motion.p>
         </motion.div>
       </div>

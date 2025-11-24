@@ -62,6 +62,7 @@ const QuickViewModal = ({ product, onClose, onAddToCart }: QuickViewModalProps) 
                       <img
                         src={product.image}
                         alt={product.name}
+                        loading="lazy"
                         className="w-full h-full object-contain"
                         onError={(e) => {
                           // Hide image if it fails to load
@@ -84,7 +85,7 @@ const QuickViewModal = ({ product, onClose, onAddToCart }: QuickViewModalProps) 
                   {/* Scent Notes - Only show if notes exist */}
                   {product.notes && product.notes.length > 0 && (
                     <div>
-                      <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Scent Notes</h3>
+                      <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Notat e Aromës</h3>
                       <div className="flex flex-wrap gap-2">
                         {product.notes.map((note) => (
                           <span
@@ -107,10 +108,10 @@ const QuickViewModal = ({ product, onClose, onAddToCart }: QuickViewModalProps) 
                       }}
                     >
                       <ShoppingCart className="mr-2 h-5 w-5" />
-                      Add to Cart
+                      Shto në Shportë
                     </Button>
                     <p className="text-xs text-center text-muted-foreground">
-                      Free shipping on orders over €150
+                      Transport falas për porosi mbi €150
                     </p>
                   </div>
                 </div>

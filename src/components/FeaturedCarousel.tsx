@@ -47,9 +47,9 @@ const FeaturedCarousel = () => {
     <section id="featured" className="py-20 bg-gradient-to-b from-muted/20 to-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 space-y-4">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold">Featured Collection</h2>
+          <h2 className="text-4xl md:text-5xl font-serif font-bold">Koleksioni i Veçantë</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Handpicked exclusives and bestsellers
+            Ekskluzive të zgjedhura me kujdes dhe më të shiturat
           </p>
         </div>
 
@@ -74,6 +74,7 @@ const FeaturedCarousel = () => {
                   <img
                     src={current.image}
                     alt={current.name}
+                    loading="lazy"
                     className="w-full h-full object-contain"
                   />
                 </div>

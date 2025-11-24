@@ -133,6 +133,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                                   <img
                                     src={product.image}
                                     alt={product.name}
+                                    loading="lazy"
                                     className="w-full h-full object-contain"
                                     onError={(e) => {
                                       // Hide image if it fails to load

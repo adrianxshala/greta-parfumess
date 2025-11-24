@@ -70,6 +70,7 @@ const Hero = () => {
                 <motion.img
                   src={heroPerfume}
                   alt="Shishe Parfumi Luksoz"
+                  loading="eager"
                   initial={{ filter: "blur(10px)" }}
                   animate={{ filter: "blur(0px)" }}
                   transition={{ delay: 0.5, duration: 1 }}

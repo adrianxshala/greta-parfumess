@@ -149,6 +149,7 @@ const ProductCard = ({
             <motion.img
               src={product.image}
               alt={product.name}
+              loading="lazy"
               className="w-full h-full object-contain transition-transform duration-500"
               animate={
                 isHovered ? { scale: 1.1, rotate: 2 } : { scale: 1, rotate: 0 }
@@ -211,7 +212,7 @@ const ProductCard = ({
                 }}
               >
                 <Eye className="h-4 w-4 sm:mr-2" />
-                <span className="hidden sm:inline">Quick View</span>
+                <span className="hidden sm:inline">Shiko Shpejt</span>
               </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -224,8 +225,8 @@ const ProductCard = ({
                 }}
               >
                 <ShoppingCart className="h-4 w-4 sm:mr-2" />
-                <span className="hidden sm:inline">Add to Cart</span>
-                <span className="sm:hidden">Add</span>
+                <span className="hidden sm:inline">Shto në Shportë</span>
+                <span className="sm:hidden">Shto</span>
               </Button>
             </motion.div>
           </div>

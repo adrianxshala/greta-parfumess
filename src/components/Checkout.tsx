@@ -94,7 +94,7 @@ const Checkout = ({
 
     setIsSubmitting(false);
     setIsSuccess(true);
-    toast.success("Order placed successfully!");
+    toast.success("Porosia u vendos me sukses!");
 
     // Clear cart after order is placed
     if (onOrderComplete) {
@@ -139,7 +139,7 @@ const Checkout = ({
             {/* Header */}
             <div className="flex items-center justify-between p-4 sm:p-6 border-b">
               <h2 className="text-xl sm:text-2xl font-serif font-semibold">
-                Checkout
+                Porosia
               </h2>
               <Button
                 variant="ghost"
@@ -167,11 +167,11 @@ const Checkout = ({
                   <CheckCircle2 className="h-12 w-12 text-primary" />
                 </motion.div>
                 <h3 className="text-2xl font-serif font-semibold">
-                  Order Placed!
+                  Porosia u Vendos!
                 </h3>
                 <p className="text-muted-foreground">
-                  Your order will be delivered soon. Please have cash ready for
-                  payment.
+                  Porosia juaj do të dorëzohet së shpejti. Ju lutem keni para gati për
+                  pagesë.
                 </p>
               </motion.div>
             ) : (
@@ -185,7 +185,7 @@ const Checkout = ({
                     <div className="flex items-center gap-2 mb-3 sm:mb-4">
                       <User className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                       <h3 className="text-base sm:text-lg font-serif font-semibold">
-                        Customer Information
+                        Informacioni i Klientit
                       </h3>
                     </div>
 
@@ -194,7 +194,7 @@ const Checkout = ({
                         htmlFor="fullName"
                         className="text-sm sm:text-base"
                       >
-                        Full Name *
+                        Emri i Plotë *
                       </Label>
                       <Input
                         id="fullName"
@@ -209,7 +209,7 @@ const Checkout = ({
 
                     <div className="space-y-2">
                       <Label htmlFor="phone" className="text-sm sm:text-base">
-                        Phone Number *
+                        Numri i Telefonit *
                       </Label>
                       <Input
                         id="phone"
@@ -229,13 +229,13 @@ const Checkout = ({
                     <div className="flex items-center gap-2 mb-3 sm:mb-4">
                       <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                       <h3 className="text-base sm:text-lg font-serif font-semibold">
-                        Delivery Address
+                        Adresa e Dorëzimit
                       </h3>
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="address" className="text-sm sm:text-base">
-                        Address *
+                        Adresa *
                       </Label>
                       <Input
                         id="address"
@@ -250,7 +250,7 @@ const Checkout = ({
 
                     <div className="space-y-2">
                       <Label htmlFor="city" className="text-sm sm:text-base">
-                        City *
+                        Qyteti *
                       </Label>
                       <Input
                         id="city"
@@ -265,7 +265,7 @@ const Checkout = ({
 
                     <div className="space-y-2">
                       <Label htmlFor="notes" className="text-sm sm:text-base">
-                        Delivery Notes (Optional)
+                        Shënime për Dorëzimin (Opsionale)
                       </Label>
                       <Textarea
                         id="notes"
@@ -283,7 +283,7 @@ const Checkout = ({
                     <div className="flex items-center gap-2 mb-3 sm:mb-4">
                       <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                       <h3 className="text-base sm:text-lg font-serif font-semibold">
-                        Payment Method
+                        Metoda e Pagesës
                       </h3>
                     </div>
 
@@ -294,7 +294,7 @@ const Checkout = ({
                       <div className="flex items-center gap-2">
                         <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                         <span className="font-semibold text-sm sm:text-base">
-                          Cash on Delivery
+                          Pagesë në Dorëzim
                         </span>
                       </div>
                       <p className="text-xs sm:text-sm text-muted-foreground mt-2">
@@ -306,7 +306,7 @@ const Checkout = ({
                   {/* Order Summary */}
                   <div className="space-y-4 p-4 sm:p-6 rounded-xl glass-card">
                     <h3 className="text-base sm:text-lg font-serif font-semibold mb-3 sm:mb-4">
-                      Order Summary
+                      Përmbledhja e Porosisë
                     </h3>
 
                     <div className="space-y-3">
@@ -318,7 +318,7 @@ const Checkout = ({
                           <div>
                             <p className="font-medium text-sm">{item.name}</p>
                             <p className="text-xs text-muted-foreground">
-                              Qty: {item.quantity} × €{item.price}
+                              Sasia: {item.quantity} × €{item.price}
                             </p>
                           </div>
                           <p className="font-semibold">
@@ -330,15 +330,15 @@ const Checkout = ({
 
                     <div className="border-t pt-4 space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Subtotal</span>
+                        <span className="text-muted-foreground">Nëntotali</span>
                         <span>€{total.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Delivery</span>
-                        <span className="text-primary font-medium">Free</span>
+                        <span className="text-muted-foreground">Transporti</span>
+                        <span className="text-primary font-medium">Falas</span>
                       </div>
                       <div className="flex justify-between text-lg font-semibold pt-2 border-t">
-                        <span>Total</span>
+                        <span>Totali</span>
                         <span>€{total.toFixed(2)}</span>
                       </div>
                     </div>
@@ -361,12 +361,12 @@ const Checkout = ({
                           }}
                           className="h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2"
                         />
-                        Processing...
+                        Duke përpunuar...
                       </>
                     ) : (
                       <>
                         <Wallet className="mr-2 h-5 w-5" />
-                        Place Order (Cash on Delivery)
+                        Vendos Porosinë (Pagesë në Dorëzim)
                       </>
                     )}
                   </Button>
