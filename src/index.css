@@ -140,6 +140,21 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-glow);
   }
 
+  /* Navbar blur effect with vendor prefixes for production compatibility */
+  .navbar-blur {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, 0.15);
+    transition: backdrop-filter 0.2s ease, -webkit-backdrop-filter 0.2s ease, background-color 0.3s ease, border-radius 0.3s ease;
+  }
+
+  /* Fallback for browsers that don't support backdrop-filter */
+  @supports not (backdrop-filter: blur(20px)) {
+    .navbar-blur {
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+  }
+
   /* Hide scrollbar but keep functionality */
   .scrollbar-hide {
     -ms-overflow-style: none;  /* IE and Edge */

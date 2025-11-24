@@ -38,15 +38,7 @@ const Header = ({ onCartOpen, cartItemCount, onSearchOpen }: HeaderProps) => {
         damping: 20,
         mass: 0.5,
       }}
-      style={{
-        backdropFilter: isScrolled ? "blur(20px)" : "blur(20px)",
-        backgroundColor: isScrolled
-          ? "rgba(255, 255, 255, 0.15)"
-          : "rgba(255, 255, 255, 0.15)",
-        transition:
-          "backdrop-filter 0.2s ease, background-color 0.3s ease, border-radius 0.3s ease",
-      }}
-      className={`fixed top-3 left-3 right-3 z-50 border border-primary/20 ${
+      className={`fixed top-3 left-3 right-3 z-50 border border-primary/20 navbar-blur ${
         isScrolled
           ? "rounded-b-2xl sm:rounded-b-3xl"
           : "rounded-2xl sm:rounded-3xl"

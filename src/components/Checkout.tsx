@@ -77,15 +77,10 @@ const Checkout = ({
     const message = encodeURIComponent(orderMessage);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     
-    // Use window.location.href for better compatibility with popup blockers
-    // This works better in production environments like Vercel
-    const newWindow = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-    
-    // Fallback: if popup is blocked, try direct navigation
-    if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
-      // Try alternative method for mobile devices
-      window.location.href = whatsappUrl;
-    }
+    // Use window.location.href to open directly in WhatsApp without popup dialog
+    // This works better on mobile (opens app) and desktop (opens WhatsApp Web)
+    // No popup blocker issues and no permission dialog
+    window.location.href = whatsappUrl;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

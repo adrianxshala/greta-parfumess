@@ -164,7 +164,9 @@ const ProductDetail = () => {
         `Faleminderit! 🙏✨`
     );
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-    window.open(whatsappUrl, "_blank");
+    // Use window.location.href to open directly in WhatsApp without popup dialog
+    // This works better on mobile (opens app) and desktop (opens WhatsApp Web)
+    window.location.href = whatsappUrl;
   };
 
   return (
